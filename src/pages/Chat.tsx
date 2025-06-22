@@ -609,8 +609,8 @@ const Chat = () => {
 
   if (videoMode) {
     // Définir les IDs (à adapter dynamiquement si besoin)
-    const replicaId = 'rf4703150052';
-    const personaId = 'p48fdf065d6b';
+    const replicaId = 'r292fa3a149f';
+    const personaId = 'p131bc833d87';
     // Générer un nom unique à chaque ouverture
     const conversationName = `coaching-${tavusConversationKey}`;
     return (
