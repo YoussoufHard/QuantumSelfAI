@@ -1,264 +1,264 @@
-# 🌌 Quantum Self AI - Application Révolutionnaire
+# 🌌 Quantum Self AI - Revolutionary Application
 
-Une expérience immersive pour converser avec toutes vos versions quantiques grâce à l'IA hybride avec authentification Supabase et traductions automatiques Lingo.dev.
+An immersive experience to converse with all your quantum versions thanks to hybrid AI with Supabase authentication and automatic translations via Lingo.dev.
 
-## 🚀 Démarrage Rapide
+## 🚀 Quick Start
 
 ### 1. Installation
 ```bash
 npm install
 ```
 
-### 2. Configuration des APIs
-Copiez `.env.example` vers `.env` et ajoutez vos clés API :
+### 2. API Configuration
+Copy `.env.example` to `.env` and add your API keys:
 
 ```bash
 cp .env.example .env
 ```
 
-**APIs Principales (Obligatoires) :**
-- **Supabase** (base de données et auth) : https://supabase.com/dashboard
-- **Lingo.dev** (traductions automatiques) : https://lingo.dev/dashboard
+**Main APIs (Required):**
+- **Supabase** (database and auth): https://supabase.com/dashboard
+- **Lingo.dev** (automatic translations): https://lingo.dev/dashboard
 
-**APIs Complémentaires :**
-- **Gemini AI** (gratuit) : https://makersuite.google.com/app/apikey
-- **ElevenLabs** (conversational AI) : https://elevenlabs.io/app/settings/api-keys
-- **Tavus** (avatars) : https://tavusapi.com/
-- **Stripe** (paiements) : https://dashboard.stripe.com/apikeys
+**Additional APIs:**
+- **Gemini AI** (free): https://makersuite.google.com/app/apikey
+- **ElevenLabs** (conversational AI): https://elevenlabs.io/app/settings/api-keys
+- **Tavus** (avatars): https://tavusapi.com/
+- **Stripe** (payments): https://dashboard.stripe.com/apikeys
 
-### 3. Configuration Supabase
-1. Créez un projet sur https://supabase.com/dashboard
-2. Allez dans Settings > API et copiez l'URL et la clé anon
-3. Cliquez sur "Connect to Supabase" dans l'interface Bolt
-4. Les migrations se lanceront automatiquement
+### 3. Supabase Setup
+1. Create a project at https://supabase.com/dashboard
+2. Go to Settings > API and copy the URL and anon key
+3. Click "Connect to Supabase" in the Bolt interface
+4. Migrations will run automatically
 
-### 4. Configuration Lingo.dev
-1. Créez un compte sur https://lingo.dev/dashboard
-2. Créez un nouveau projet
-3. Obtenez votre API key et Project ID
-4. Ajoutez-les dans votre fichier `.env`
+### 4. Lingo.dev Setup
+1. Create an account at https://lingo.dev/dashboard
+2. Create a new project
+3. Get your API key and Project ID
+4. Add them to your `.env` file
 
-### 5. Lancement
+### 5. Launch
 ```bash
 npm run dev
 ```
 
-L'application sera accessible sur : http://localhost:5173
+The app will be available at: http://localhost:5173
 
-## 🎯 Architecture Complète
+## 🎯 Complete Architecture
 
-### 🔐 Authentification Supabase (Principal)
-- **Inscription/Connexion** : Email + mot de passe sécurisé
-- **Profils utilisateurs** : Données complètes avec questionnaires et analyses
-- **Versions quantiques** : Stockage des personnalités IA personnalisées
-- **Conversations** : Historique complet avec messages et métadonnées
-- **Insights** : Génération et stockage des conseils personnalisés
-- **Paramètres** : Préférences utilisateur et configuration
-- **Météo émotionnelle** : Suivi de l'état émotionnel dans le temps
+### 🔐 Supabase Authentication (Main)
+- **Sign up/Sign in**: Secure email + password
+- **User profiles**: Complete data with questionnaires and analysis
+- **Quantum versions**: Storage of personalized AI personalities
+- **Conversations**: Full history with messages and metadata
+- **Insights**: Generation and storage of personalized advice
+- **Settings**: User preferences and configuration
+- **Emotional weather**: Tracking emotional state over time
 
-### 🌍 Traductions Automatiques Lingo.dev (Principal)
-- **Traduction en temps réel** : Tout le contenu traduit automatiquement
-- **10+ langues supportées** : Français, Anglais, Espagnol, Allemand, etc.
-- **Détection automatique** : Langue du navigateur détectée
-- **Observation DOM** : Nouveau contenu traduit automatiquement
-- **Cache intelligent** : Optimisation des performances
-- **Fallback intégré** : Traductions de base si API indisponible
+### 🌍 Automatic Translations Lingo.dev (Main)
+- **Real-time translation**: All content automatically translated
+- **10+ supported languages**: French, English, Spanish, German, etc.
+- **Automatic detection**: Browser language detected
+- **DOM observation**: New content translated automatically
+- **Smart cache**: Performance optimization
+- **Integrated fallback**: Basic translations if API unavailable
 
-### 🧠 Gemini AI avec RAG (Complémentaire)
-- **Conversations intelligentes** : Réponses contextuelles et personnalisées
-- **RAG (Retrieval-Augmented Generation)** : Contexte Quantum Self AI intégré
-- **Base de connaissances** : Informations sur l'app, versions quantiques, fonctionnalités
-- **Contrôle des conversations** : Garde les discussions dans l'univers Quantum Self AI
-- **Gratuit** : API Google AI Studio gratuite
+### 🧠 Gemini AI with RAG (Additional)
+- **Smart conversations**: Contextual and personalized responses
+- **RAG (Retrieval-Augmented Generation)**: Integrated Quantum Self AI context
+- **Knowledge base**: Info about the app, quantum versions, features
+- **Conversation control**: Keeps discussions within Quantum Self AI universe
+- **Free**: Free Google AI Studio API
 
-### 🎤 ElevenLabs Client Officiel (Complémentaire)
-- **Client JavaScript officiel** : `@elevenlabs/elevenlabs-js`
-- **Clonage vocal personnalisé** : Votre voix unique pour chaque version quantique
-- **Agents conversationnels** : IA qui comprend et répond naturellement
-- **Réponses audio en temps réel** : Conversations vocales fluides
-- **Fallback intelligent** : Bascule vers Gemini si ElevenLabs indisponible
+### 🎤 Official ElevenLabs Client (Additional)
+- **Official JavaScript client**: `@elevenlabs/elevenlabs-js`
+- **Custom voice cloning**: Your unique voice for each quantum version
+- **Conversational agents**: AI that understands and responds naturally
+- **Real-time audio responses**: Smooth voice conversations
+- **Smart fallback**: Switches to Gemini if ElevenLabs unavailable
 
-## 🔧 Base de Données Supabase
+## 🔧 Supabase Database
 
-### Tables Principales
-- **profiles** : Profils utilisateurs étendus avec données biométriques
-- **quantum_versions** : Versions quantiques personnalisées par utilisateur
-- **conversations** : Historique des conversations
-- **messages** : Messages individuels avec métadonnées
-- **insights** : Insights générés par l'IA
-- **user_settings** : Paramètres et préférences
-- **emotional_weather** : Suivi de l'état émotionnel
+### Main Tables
+- **profiles**: Extended user profiles with biometric data
+- **quantum_versions**: User-customized quantum versions
+- **conversations**: Conversation history
+- **messages**: Individual messages with metadata
+- **insights**: AI-generated insights
+- **user_settings**: Settings and preferences
+- **emotional_weather**: Emotional state tracking
 
-### Sécurité
-- **RLS (Row Level Security)** : Activé sur toutes les tables
-- **Politiques d'accès** : Chaque utilisateur accède uniquement à ses données
-- **Authentification sécurisée** : Gestion des sessions et tokens
-- **Triggers automatiques** : Création automatique des profils et données par défaut
+### Security
+- **RLS (Row Level Security)**: Enabled on all tables
+- **Access policies**: Each user accesses only their data
+- **Secure authentication**: Session and token management
+- **Automatic triggers**: Automatic creation of profiles and default data
 
-## 🌍 Fonctionnalités Multilingues
+## 🌍 Multilingual Features
 
-### Langues Supportées
-- 🇫🇷 Français (par défaut)
+### Supported Languages
+- 🇫🇷 French (default)
 - 🇺🇸 English
-- 🇪🇸 Español
-- 🇩🇪 Deutsch
-- 🇮🇹 Italiano
-- 🇵🇹 Português
-- 🇷🇺 Русский
-- 🇯🇵 日本語
-- 🇰🇷 한국어
-- 🇨🇳 中文
+- 🇪🇸 Spanish
+- 🇩🇪 German
+- 🇮🇹 Italian
+- 🇵🇹 Portuguese
+- 🇷🇺 Russian
+- 🇯🇵 Japanese
+- 🇰🇷 Korean
+- 🇨🇳 Chinese
 
-### Traduction Automatique
-- **Contenu complet** : Tous les textes, boutons, placeholders, etc.
-- **Temps réel** : Traduction instantanée lors du changement de langue
-- **Persistance** : Langue sauvegardée dans le profil utilisateur
-- **Optimisée** : Cache et requêtes par lots pour les performances
+### Automatic Translation
+- **Full content**: All texts, buttons, placeholders, etc.
+- **Real-time**: Instant translation when changing language
+- **Persistence**: Language saved in user profile
+- **Optimized**: Cache and batch requests for performance
 
-## 🧪 Guide de Test
+## 🧪 Testing Guide
 
-### 1. Authentification
-- Créez un compte avec email/mot de passe
-- Testez la connexion/déconnexion
-- Vérifiez la persistance de session
-- Testez la réinitialisation de mot de passe
+### 1. Authentication
+- Create an account with email/password
+- Test login/logout
+- Check session persistence
+- Test password reset
 
-### 2. Traductions
-- Changez de langue avec le sélecteur
-- Vérifiez que tout le contenu est traduit
-- Testez sur différentes pages
-- Vérifiez la sauvegarde de la langue
+### 2. Translations
+- Change language with the selector
+- Check that all content is translated
+- Test on different pages
+- Check language saving
 
 ### 3. Onboarding
-- **Étape 1** : Entrez votre nom
-- **Étape 2** : Uploadez une photo (analyse Pica simulée)
-- **Étape 3** : **Enregistrez votre voix (10 secondes)** - Clonage ElevenLabs
-- **Étape 4** : Répondez au questionnaire psychologique
-- **Étape 5** : Sélectionnez vos versions quantiques
+- **Step 1**: Enter your name
+- **Step 2**: Upload a photo (simulated Pica analysis)
+- **Step 3**: **Record your voice (10 seconds)** - ElevenLabs cloning
+- **Step 4**: Answer the psychological questionnaire
+- **Step 5**: Select your quantum versions
 
 ### 4. Dashboard
-- Explorez la timeline quantique circulaire
-- Consultez votre météo émotionnelle
-- Cliquez sur "Conversation du Jour"
-- Vérifiez les statistiques et insights
+- Explore the circular quantum timeline
+- Check your emotional weather
+- Click on "Conversation of the Day"
+- Check stats and insights
 
-### 5. Chat avec IA Hybride
-- Sélectionnez une version quantique
-- Testez les conversations avec Gemini AI + RAG
-- **Questions sur l'app** : "Comment fonctionne Quantum Self AI ?"
-- **Activez/désactivez l'audio** avec le bouton volume
-- Utilisez les questions suggérées
-- Testez le mode vocal avec reconnaissance vocale
+### 5. Hybrid AI Chat
+- Select a quantum version
+- Test conversations with Gemini AI + RAG
+- **App questions**: "How does Quantum Self AI work?"
+- **Enable/disable audio** with the volume button
+- Use suggested questions
+- Test voice mode with speech recognition
 
-## 🔐 Authentification et Sécurité
+## 🔐 Authentication and Security
 
-### Fonctionnalités d'Auth
-- **Inscription** : Email + mot de passe + nom
-- **Connexion** : Email + mot de passe
-- **Réinitialisation** : Email de reset sécurisé
-- **Sessions** : Gestion automatique des tokens
-- **Profils** : Données utilisateur étendues
-- **Permissions** : RLS pour la sécurité des données
+### Auth Features
+- **Sign up**: Email + password + name
+- **Sign in**: Email + password
+- **Reset**: Secure reset email
+- **Sessions**: Automatic token management
+- **Profiles**: Extended user data
+- **Permissions**: RLS for data security
 
-### Protection des Routes
-- **Routes protégées** : Dashboard, Chat, Premium, etc.
-- **Redirection automatique** : Vers landing si non connecté
-- **État de chargement** : Indicateurs pendant l'authentification
-- **Gestion d'erreurs** : Messages d'erreur clairs
+### Route Protection
+- **Protected routes**: Dashboard, Chat, Premium, etc.
+- **Automatic redirection**: To landing if not logged in
+- **Loading state**: Indicators during authentication
+- **Error handling**: Clear error messages
 
-## 🌍 Configuration Lingo.dev
+## 🌍 Lingo.dev Configuration
 
-### Obtenir les Clés API
-1. Allez sur [Lingo.dev Dashboard](https://lingo.dev/dashboard)
-2. Créez un nouveau projet
-3. Obtenez votre API Key et Project ID
-4. Ajoutez-les dans `.env` :
+### Get API Keys
+1. Go to [Lingo.dev Dashboard](https://lingo.dev/dashboard)
+2. Create a new project
+3. Get your API Key and Project ID
+4. Add them to `.env`:
    ```
    VITE_LINGO_API_KEY=your_lingo_api_key_here
    VITE_LINGO_PROJECT_ID=your_lingo_project_id_here
    ```
 
-### Fonctionnalités
-- **Traduction automatique** : Tout le contenu traduit en temps réel
-- **Détection de langue** : Langue du navigateur détectée automatiquement
-- **Cache intelligent** : Optimisation des performances
-- **Observation DOM** : Nouveau contenu traduit automatiquement
-- **Fallback** : Traductions de base si API indisponible
+### Features
+- **Automatic translation**: All content translated in real time
+- **Language detection**: Browser language detected automatically
+- **Smart cache**: Performance optimization
+- **DOM observation**: New content translated automatically
+- **Fallback**: Basic translations if API unavailable
 
-## 🔧 Dépannage
+## 🔧 Troubleshooting
 
-### Erreurs Communes
+### Common Errors
 
-**1. Erreur Supabase**
-- Vérifiez vos clés API dans `.env`
-- Cliquez sur "Connect to Supabase" dans Bolt
-- Vérifiez que les migrations sont appliquées
+**1. Supabase Error**
+- Check your API keys in `.env`
+- Click "Connect to Supabase" in Bolt
+- Check that migrations are applied
 
-**2. Erreur Lingo.dev**
-- Vérifiez votre API key et Project ID
-- L'app fonctionne en mode fallback sans Lingo.dev
-- Vérifiez les logs de la console
+**2. Lingo.dev Error**
+- Check your API key and Project ID
+- The app works in fallback mode without Lingo.dev
+- Check console logs
 
-**3. Module non trouvé**
+**3. Module not found**
 ```bash
 npm install
 npm run dev
 ```
 
-**4. APIs non configurées**
-- L'app fonctionne avec Supabase + Lingo.dev uniquement
-- Les autres APIs sont optionnelles avec fallbacks
+**4. APIs not configured**
+- The app works with Supabase + Lingo.dev only
+- Other APIs are optional with fallbacks
 
-## 📱 Test Mobile
+## 📱 Mobile Testing
 
-L'application est responsive et multilingue. Testez sur :
+The app is responsive and multilingual. Test on:
 - Chrome DevTools (F12 > Toggle Device)
-- Votre téléphone via l'IP locale
-- Simulateurs iOS/Android
-- Différentes langues
+- Your phone via local IP
+- iOS/Android simulators
+- Different languages
 
-## 🎨 Personnalisation
+## 🎨 Customization
 
-### Base de Données
-- Modifiez les migrations dans `supabase/migrations/`
-- Ajoutez de nouvelles tables selon vos besoins
-- Personnalisez les politiques RLS
+### Database
+- Edit migrations in `supabase/migrations/`
+- Add new tables as needed
+- Customize RLS policies
 
-### Traductions
-- Ajoutez de nouvelles langues dans `LingoService.getSupportedLanguages()`
-- Personnalisez les traductions de fallback
-- Configurez les langues par défaut
+### Translations
+- Add new languages in `LingoService.getSupportedLanguages()`
+- Customize fallback translations
+- Set default languages
 
-### RAG et IA
-- Modifiez `QUANTUM_SELF_KNOWLEDGE_BASE` dans `src/services/gemini.ts`
-- Ajoutez de nouvelles informations sur l'app
-- Personnalisez les guidelines de conversation
+### RAG and AI
+- Edit `QUANTUM_SELF_KNOWLEDGE_BASE` in `src/services/gemini.ts`
+- Add new app information
+- Customize conversation guidelines
 
-## 🚀 Déploiement
+## 🚀 Deployment
 
-### Netlify (Recommandé)
+### Netlify (Recommended)
 ```bash
 npm run build
-# Uploadez le dossier `dist/` sur Netlify
+# Upload the `dist/` folder to Netlify
 ```
 
-### Variables d'environnement
-N'oubliez pas d'ajouter toutes vos clés API dans les variables d'environnement de votre plateforme de déploiement :
+### Environment Variables
+Don't forget to add all your API keys to your deployment platform's environment variables:
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
 - `VITE_LINGO_API_KEY`
 - `VITE_LINGO_PROJECT_ID`
-- Et les autres APIs optionnelles
+- And other optional APIs
 
 ## 📞 Support
 
-En cas de problème :
-1. Vérifiez la console du navigateur (F12)
-2. Consultez les logs du terminal
-3. Vérifiez que Supabase est configuré
-4. Vérifiez que Lingo.dev est configuré
-5. Testez d'abord en mode simulation (sans APIs optionnelles)
+If you have a problem:
+1. Check the browser console (F12)
+2. Check terminal logs
+3. Make sure Supabase is configured
+4. Make sure Lingo.dev is configured
+5. Test first in simulation mode (without optional APIs)
 
 ---
 
-**🌟 Profitez de vos conversations quantiques avec authentification sécurisée et traductions automatiques !**
+**🌟 Enjoy your quantum conversations with secure authentication and automatic translations!**
