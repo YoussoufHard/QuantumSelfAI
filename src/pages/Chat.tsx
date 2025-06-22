@@ -19,16 +19,25 @@ const Chat = () => {
   const { t } = useTranslation();
   const { currentVersion, setCurrentVersion, addMessage, user } = useApp();
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([
+  type MessageType = {
+    id: string;
+    content: string;
+    sender: 'user' | 'quantum';
+    timestamp: Date;
+    versionId: string;
+    audioBlob: Blob | null;
+  };
+
+  const [messages, setMessages] = useState<MessageType[]>([
     {
       id: '1',
       content: t('nav.features') === 'Features'
         ? 'Hi! I\'m excited to reconnect with you in Quantum Self AI. What\'s on your mind right now?'
         : 'Salut ! Je suis ravi de te retrouver dans Quantum Self AI. Qu\'est-ce qui te préoccupe en ce moment ?',
-      sender: 'quantum' as const,
+      sender: 'quantum',
       timestamp: new Date(),
       versionId: 'young-self',
-      audioBlob: null as Blob | null,
+      audioBlob: null,
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
@@ -152,7 +161,7 @@ const Chat = () => {
       console.error('❌ Gemini test failed:', error);
       Sentry.captureException(error);
       setGeminiConnected(false);
-      toast.error('🔴 Gemini connection test failed');
+      // toast.error('🔴 Gemini connection test failed');
     }
   };
 
@@ -223,12 +232,12 @@ const Chat = () => {
             toast.success(`🔊 Audio generated with ${voiceId === user?.voiceCloneId ? 'your cloned voice' : 'Will\'s voice'}`);
           } else {
             console.warn('⚠️ Empty audio generated');
-            toast.error('🔴 Audio generation failed, using text response');
+            // toast.error('🔴 Audio generation failed, using text response');
           }
         } catch (audioError) {
           console.warn('⚠️ Audio generation error:', audioError);
           Sentry.captureException(audioError);
-          toast.error('🔴 Audio generation failed, using text response');
+          // toast.error('🔴 Audio generation failed, using text response');
         }
       }
 
@@ -252,7 +261,7 @@ const Chat = () => {
     } catch (error) {
       console.error('❌ Error generating response:', error);
       Sentry.captureException(error);
-      toast.error(t('errors.generationError'));
+      // toast.error(t('errors.generationError'));
 
       const fallbackMessage = {
         id: (Date.now() + 1).toString(),
@@ -435,7 +444,7 @@ const Chat = () => {
       recorder.onerror = (event) => {
         console.error('❌ MediaRecorder error:', (event as any).error);
         Sentry.captureException((event as any).error);
-        toast.error('🔴 Recording error. Check microphone permissions or try again.');
+        // toast.error('🔴 Recording error. Check microphone permissions or try again.');
         setIsRecording(false);
         setIsMicAccessError(true);
         setIsWaitingForResponse(false);
@@ -464,7 +473,7 @@ const Chat = () => {
     } catch (error) {
       console.error('❌ Microphone access error:', error);
       Sentry.captureException(error);
-      toast.error('🔴 Unable to access microphone. Check permissions or use text mode.', { id: 'mic-init' });
+      // toast.error('🔴 Unable to access microphone. Check permissions or use text mode.', { id: 'mic-init' });
       setIsMicAccessError(true);
       setIsRecording(false);
       setIsWaitingForResponse(false);
@@ -508,7 +517,7 @@ const Chat = () => {
         clearInterval(recordingTimerRef.current);
         recordingTimerRef.current = null;
       }
-      toast.info('🎤 Recording cancelled');
+      toast('🎤 Recording cancelled');
     }
   }, [isRecording]);
 
@@ -538,11 +547,15 @@ const Chat = () => {
     setIsLowVolume(false);
   };
 
+  // Ajout d'un état pour forcer le refresh du nom de conversation à chaque ouverture
+  const [tavusConversationKey, setTavusConversationKey] = useState<number>(Date.now());
+
   const toggleVideoMode = () => {
     if (!videoMode) {
       toast.success('🎬 Tavus video mode activated!');
+      setTavusConversationKey(Date.now() + Math.floor(Math.random() * 10000));
     } else {
-      toast.info('💬 Back to classic chat mode');
+      toast('💬 Back to classic chat mode');
     }
     setVideoMode(!videoMode);
     setVoiceMode(false);
@@ -554,7 +567,7 @@ const Chat = () => {
     if (!voiceMode) {
       toast.success('🎤 Voice conversation mode activated!');
     } else {
-      toast.info('💬 Back to text mode');
+      toast('💬 Back to text mode');
       stopVoiceRecording();
     }
     setVoiceMode(!voiceMode);
@@ -595,6 +608,11 @@ const Chat = () => {
   }
 
   if (videoMode) {
+    // Définir les IDs (à adapter dynamiquement si besoin)
+    const replicaId = 'rf4703150052';
+    const personaId = 'p48fdf065d6b';
+    // Générer un nom unique à chaque ouverture
+    const conversationName = `coaching-${tavusConversationKey}`;
     return (
       <div className="flex min-h-screen bg-slate-50">
         <Navigation />
@@ -627,7 +645,14 @@ const Chat = () => {
                 </button>
               </div>
             </div>
-            <TavusVideoChat personality={selectedVersion} userProfile={user} onClose={toggleVideoMode} className="w-full" />
+            <TavusVideoChat
+              key={tavusConversationKey}
+              replicaId={replicaId}
+              personaId={personaId}
+              onClose={toggleVideoMode}
+              className="w-full"
+              conversationName={conversationName}
+            />
           </div>
         </div>
       </div>
@@ -741,10 +766,10 @@ const Chat = () => {
               >
                 {audioEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
               </button>
-              <button className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100">
+              <button title="audio her" className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100">
                 <Share className="w-5 h-5" />
               </button>
-              <button className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100">
+              <button title='second her' className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100">
                 <Save className="w-5 h-5" />
               </button>
             </div>
