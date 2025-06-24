@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 const Landing = () => {
   const { t } = useTranslation();
-  const { isRegistered, profile, loading } = useAuthContext();
+  const { isRegistered, profile, loading, registerEmail } = useAuthContext();
   const navigate = useNavigate();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
@@ -71,29 +71,31 @@ const Landing = () => {
     },
   ];
 
-  // Rediriger immédiatement vers /onboarding si enregistré
+  // Redirect only if registered and onboarding is complete
   useEffect(() => {
-    if (!loading && profile !== null && isRegistered) {
-      console.debug(`🔐 Registration check: isRegistered=${isRegistered}`);
-      console.debug(`🧭 Redirection automatique vers /onboarding`);
-      navigate('/onboarding', { replace: true });
+    if (!loading && profile && isRegistered && profile.onboardingcomplete) {
+      console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
+      console.debug(`🧭 Redirection automatique vers /dashboard`);
+      navigate('/dashboard', { replace: true });
     }
   }, [isRegistered, profile, loading, navigate]);
 
-  // Gérer le clic sur "Continuer"
+  // Handle clicking "Commencer" or submitting email
   const handleAuthClick = () => {
-    if (isRegistered) {
-      console.debug(`🧭 Redirection vers /onboarding (utilisateur enregistré)`);
-      navigate('/onboarding', { replace: true });
-    } else {
-      setShowAuthForm(true);
-    }
+    setShowAuthForm(true);
   };
 
-  const handleAuthSuccess = () => {
-    setShowAuthForm(false);
-    console.debug(`🧭 Redirection vers /onboarding après enregistrement réussi`);
-    navigate('/onboarding', { replace: true });
+  const handleAuthSuccess = async (email: string) => {
+    try {
+      const { exists } = await registerEmail(email);
+      setShowAuthForm(false);
+      toast.success(exists ? 'Bienvenue de retour !' : 'Inscription réussie !');
+      console.debug(`🧭 Redirection vers /onboarding après enregistrement réussi`);
+      navigate('/onboarding', { replace: true });
+    } catch (error) {
+      toast.error('Erreur lors de l’inscription. Veuillez réessayer.');
+      console.error('❌ Erreur handleAuthSuccess:', error);
+    }
   };
 
   const handleDemoClick = () => {
@@ -103,7 +105,6 @@ const Landing = () => {
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Afficher un loader pendant que l'état d'enregistrement est indéterminé
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
@@ -118,12 +119,10 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
-      {/* Animated Background */}
       <div className="absolute inset-0 opacity-30">
         <QuantumParticles />
       </div>
 
-      {/* Header */}
       <header className="relative z-10 container mx-auto px-6 py-4">
         <nav className="flex items-center justify-between">
           <motion.div
@@ -179,7 +178,6 @@ const Landing = () => {
             </motion.button>
           </div>
 
-          {/* Mobile */}
           <div className="md:hidden flex items-center gap-3">
             <LanguageSwitcher />
             <button
@@ -193,7 +191,6 @@ const Landing = () => {
         </nav>
       </header>
 
-      {/* Hero Section */}
       <section className="relative z-10 container mx-auto px-6 py-20 text-center">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -259,7 +256,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Demo Video Section */}
       <section id="demo" className="relative z-10 container mx-auto px-6 py-20">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -293,7 +289,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="relative z-10 container mx-auto px-6 py-20">
         <div className="text-center mb-16">
           <motion.div
@@ -373,7 +368,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
       <section className="relative z-10 container mx-auto px-6 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -384,12 +378,10 @@ const Landing = () => {
         </motion.div>
       </section>
 
-      {/* Pricing Section */}
       <section id="pricing" className="relative z-10 container mx-auto px-4 py-20">
         <PricingTiers />
       </section>
 
-      {/* CTA Section */}
       <section className="relative z-10 container mx-auto px-6 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -446,7 +438,6 @@ const Landing = () => {
         </motion.div>
       </section>
 
-      {/* Footer */}
       <footer className="relative z-10 bg-gray-900/30 backdrop-blur-sm border-t border-gray-800/30 py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-6">
