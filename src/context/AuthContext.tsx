@@ -1,11 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useAuth } from '../hooks/useAuth';
-
-export interface AuthUser {
-  id: string;
-  email: string;
-  onboardingComplete: boolean;
-}
+import { useAuth, AuthUser } from '../hooks/useAuth'; // Import AuthUser from useAuth
 
 interface AuthContextType {
   email: string | null;
@@ -14,12 +8,13 @@ interface AuthContextType {
   isRegistered: boolean;
   registerEmail: (email: string) => Promise<{ exists: boolean }>;
   clearRegistration: () => Promise<void>;
+  completeOnboarding: () => Promise<void>; // Added for onboarding completion
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { email, profile, loading, isRegistered, registerEmail, clearRegistration } = useAuth();
+  const { email, profile, loading, isRegistered, registerEmail, clearRegistration, completeOnboarding } = useAuth();
 
   const value: AuthContextType = {
     email,
@@ -28,6 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isRegistered,
     registerEmail,
     clearRegistration,
+    completeOnboarding,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
