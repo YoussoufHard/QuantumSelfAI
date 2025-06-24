@@ -1,31 +1,36 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useAuth, AuthState } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 export interface AuthUser {
   id: string;
-  name: string;
   email: string;
   onboardingComplete: boolean;
 }
 
-interface AuthContextType extends AuthState {
-  signUp: (email: string, password: string, name: string) => Promise<any>;
-  signIn: (email: string, password: string) => Promise<any>;
-  signOut: () => Promise<any>;
-  updateProfile: (updates: Partial<AuthUser>) => Promise<any>;
-  resetPassword: (email: string) => Promise<any>;
+interface AuthContextType {
+  email: string | null;
+  profile: AuthUser | null;
+  loading: boolean;
+  isRegistered: boolean;
+  registerEmail: (email: string) => Promise<{ exists: boolean }>;
+  clearRegistration: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const auth = useAuth();
+  const { email, profile, loading, isRegistered, registerEmail, clearRegistration } = useAuth();
 
-  return (
-    <AuthContext.Provider value={auth}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value: AuthContextType = {
+    email,
+    profile,
+    loading,
+    isRegistered,
+    registerEmail,
+    clearRegistration,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext() {
