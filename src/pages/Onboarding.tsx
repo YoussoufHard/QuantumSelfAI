@@ -519,22 +519,22 @@ const Onboarding = () => {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     } else {
-      const newUser = {
-        id: Date.now().toString(),
-        name: formData.name,
-        onboardingComplete: true,
-        selectedVersions: quantumVersions.filter(v => selectedVersions.includes(v.id)),
-        questionnaire: formData.questionnaire,
-        picaAnalysis: formData.picaAnalysis,
-        personalityProfile: formData.personalityProfile,
-        profilePhoto: formData.profilePhoto ? URL.createObjectURL(formData.profilePhoto) : undefined,
-        voiceCloneId: voiceCloneResult?.voiceId
-      };
-      setUser(newUser);
+      // const newUser = {
+      //   id: Date.now().toString(),
+      //   name: formData.name,
+      //   onboardingComplete: true,
+      //   selectedVersions: quantumVersions.filter(v => selectedVersions.includes(v.id)),
+      //   questionnaire: formData.questionnaire,
+      //   picaAnalysis: formData.picaAnalysis,
+      //   personalityProfile: formData.personalityProfile,
+      //   profilePhoto: formData.profilePhoto ? URL.createObjectURL(formData.profilePhoto) : undefined,
+      //   voiceCloneId: voiceCloneResult?.voiceId
+      // };
+ //     setUser(newUser);
       toast.success('🚀 Bienvenue dans Quantum Self AI !');
       navigate('/dashboard');
     }
-  }, [currentStep, formData, selectedVersions, voiceCloneResult, setUser, navigate]);
+  }, [currentStep, formData, selectedVersions, voiceCloneResult, navigate]);
 
   const handlePrevious = useCallback(() => {
     if (currentStep > 1) {
