@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 export interface AuthUser {
   id: string;
   email: string;
-  onboardingcomplete: boolean; // Updated to match database column name
+  onboardingcomplete: boolean;
 }
 
 export interface AuthState {
@@ -24,7 +24,6 @@ export function useAuth() {
   });
 
   useEffect(() => {
-    // Charger l'email depuis le localStorage (simuler un visiteur enregistré)
     const storedEmail = localStorage.getItem('quantum_self_email');
     if (storedEmail) {
       fetchVisitorProfile(storedEmail).then(profile => {
@@ -51,7 +50,7 @@ export function useAuth() {
     try {
       const { data, error } = await supabase
         .from('visitors')
-        .select('id, email, onboardingcomplete') // Updated to match database column name
+        .select('id, email, onboardingcomplete')
         .eq('email', email)
         .single();
 
@@ -63,7 +62,7 @@ export function useAuth() {
         return {
           id: data.id,
           email: data.email,
-          onboardingcomplete: data.onboardingcomplete || false, // Updated to match database column name
+          onboardingcomplete: data.onboardingcomplete || false,
         };
       }
       return null;
@@ -76,10 +75,9 @@ export function useAuth() {
 
   const registerEmail = async (email: string) => {
     try {
-      // Vérifier si l'email existe
       const { data: existingVisitor, error: selectError } = await supabase
         .from('visitors')
-        .select('id, email, onboardingcomplete') // Updated to match database column name
+        .select('id, email, onboardingcomplete')
         .eq('email', email)
         .single();
 
@@ -88,13 +86,12 @@ export function useAuth() {
       }
 
       if (existingVisitor) {
-        // Email existe déjà
         setAuthState({
           email,
           profile: {
             id: existingVisitor.id,
             email: existingVisitor.email,
-            onboardingcomplete: existingVisitor.onboardingcomplete || false, // Updated to match database column name
+            onboardingcomplete: existingVisitor.onboardingcomplete || false,
           },
           loading: false,
           isRegistered: true,
@@ -104,14 +101,13 @@ export function useAuth() {
         return { exists: true };
       }
 
-      // Insérer nouveau email
       const { data: newVisitor, error: insertError } = await supabase
         .from('visitors')
         .insert({
           email,
-          onboardingcomplete: false, // Updated to match database column name
+          onboardingcomplete: false,
         })
-        .select('id, email, onboardingcomplete') // Updated to match database column name
+        .select('id, email, onboardingcomplete')
         .single();
 
       if (insertError) {
@@ -123,7 +119,7 @@ export function useAuth() {
         profile: {
           id: newVisitor.id,
           email: newVisitor.email,
-          onboardingcomplete: newVisitor.onboardingcomplete || false, // Updated to match database column name
+          onboardingcomplete: newVisitor.onboardingcomplete || false,
         },
         loading: false,
         isRegistered: true,
@@ -156,9 +152,30 @@ export function useAuth() {
     }
   };
 
+  const completeOnboarding = async () => {
+    if (!authState.profile) return;
+    try {
+      const { error } = await supabase
+        .from('visitors')
+        .update({ onboardingcomplete: true })
+        .eq('id', authState.profile.id);
+      if (error) throw new Error(`Erreur mise à jour onboarding: ${error.message}`);
+      setAuthState(prev => ({
+        ...prev,
+        profile: { ...prev.profile!, onboardingcomplete: true },
+      }));
+      console.debug('🔐 Onboarding complété');
+    } catch (error: any) {
+      console.error('❌ Erreur completeOnboarding:', error.message);
+      Sentry.captureException(error);
+      throw error;
+    }
+  };
+
   return {
     ...authState,
     registerEmail,
     clearRegistration,
+    completeOnboarding,
   };
 }
