@@ -67,6 +67,21 @@ const resources = {
       "onboarding.autoComplete": "Auto-complete all",
       "onboarding.sufficientToContinue": "Sufficient to continue!",
       
+      // Auth
+      "auth.title": "Start Your Journey with Quantum Self AI",
+      "auth.subtitle": "Enter your email to unlock your quantum potential",
+      "auth.emailLabel": "Your Email Address",
+      "auth.emailPlaceholder": "example@yourmail.com",
+      "auth.submit": "Start Now",
+      "auth.invalidEmail": "Please enter a valid email",
+      "auth.alreadyRegistered": "Welcome back!",
+      "auth.success": "Registration successful! Start your adventure!",
+      "auth.error": "An error occurred. Please try again.",
+      "auth.terms": "By continuing, you agree to our",
+      "auth.termsLink": "Terms of Use",
+      "auth.and": "and our",
+      "auth.privacyLink": "Privacy Policy",
+      
       // Premium
       "premium.title": "Level up",
       "premium.subtitle": "Access all your quantum versions, unlimited conversations, and revolutionary AI insights to transform your life.",
@@ -166,8 +181,8 @@ const resources = {
       "features.past": "Ton Passé Motivé",
       "features.present": "Ton Présent Optimisé",
       "features.future": "Ton Futur Sage",
-      "features.success": "Toi Parallèle Success",
-      "features.zen": "Toi Parallèle Zen",
+      "features.success": "Ton Parallèle Réussite",
+      "features.zen": "Ton Parallèle Zen",
       
       // Dashboard
       "dashboard.welcome": "Salut {{name}} ! 👋",
@@ -209,9 +224,24 @@ const resources = {
       "onboarding.previous": "Précédent",
       "onboarding.next": "Suivant",
       "onboarding.enterQuantumUniverse": "Entrer dans l'univers quantique",
-      "onboarding.skipMinimal": "Skip (réponses minimales)",
+      "onboarding.skipMinimal": "Passer (réponses minimales)",
       "onboarding.autoComplete": "Auto-compléter tout",
       "onboarding.sufficientToContinue": "Suffisant pour continuer !",
+      
+      // Auth
+      "auth.title": "Débutez votre voyage avec Quantum Self AI",
+      "auth.subtitle": "Entrez votre email pour découvrir votre potentiel quantique",
+      "auth.emailLabel": "Votre adresse email",
+      "auth.emailPlaceholder": "exemple@votreemail.com",
+      "auth.submit": "Démarrer maintenant",
+      "auth.invalidEmail": "Veuillez entrer un email valide",
+      "auth.alreadyRegistered": "Bienvenue de retour !",
+      "auth.success": "Inscription réussie ! Commencez votre aventure !",
+      "auth.error": "Une erreur s'est produite. Veuillez réessayer.",
+      "auth.terms": "En continuant, vous acceptez nos",
+      "auth.termsLink": "Conditions d'utilisation",
+      "auth.and": "et notre",
+      "auth.privacyLink": "Politique de confidentialité",
       
       // Premium
       "premium.title": "Passe au niveau supérieur",
@@ -251,8 +281,8 @@ const resources = {
       "versions.youngSelf": "Toi à 16 ans",
       "versions.presentSelf": "Toi à 30 ans",
       "versions.wiseSelf": "Toi à 60 ans",
-      "versions.successSelf": "Toi Parallèle Success",
-      "versions.zenSelf": "Toi Parallèle Zen",
+      "versions.successSelf": "Ton Parallèle Réussite",
+      "versions.zenSelf": "Ton Parallèle Zen",
       "versions.youngDescription": "Plein d'énergie et de rêves",
       "versions.presentDescription": "Présent optimisé et équilibré",
       "versions.wiseDescription": "Sage et expérimenté",
@@ -339,6 +369,55 @@ const resources = {
       "chat.geminiRagActive": "IA Gemini con RAG activa",
       "chat.simulationMode": "Modo simulación",
       "chat.tavusVideoAvailable": "Modo video Tavus disponible",
+      
+      // Onboarding
+      "onboarding.step": "Paso {{current}} de {{total}}",
+      "onboarding.welcome": "¡Bienvenido a la era cuántica!",
+      "onboarding.namePrompt": "Empecemos por conocernos. ¿Cómo debemos llamarte?",
+      "onboarding.namePlaceholder": "Tu nombre...",
+      "onboarding.picaAnalysis": "Análisis Pica AI Avanzado",
+      "onboarding.picaDescription": "Sube una foto para un análisis biométrico completo y la creación de avatares Tavus",
+      "onboarding.voiceCloning": "Clonación de Voz ElevenLabs",
+      "onboarding.voiceDescription": "Graba 10 segundos de tu voz para crear respuestas de voz ultra-personalizadas",
+      "onboarding.psychProfile": "Perfil psicológico profundo",
+      "onboarding.quantumGeneration": "Generación Cuántica",
+      "onboarding.selectVersions": "Selecciona tus 3-5 versiones cuánticas favoritas para empezar",
+      "onboarding.previous": "Anterior",
+      "onboarding.next": "Siguiente",
+      "onboarding.enterQuantumUniverse": "Entrar en el universo cuántico",
+      "onboarding.skipMinimal": "Saltar (respuestas mínimas)",
+      "onboarding.autoComplete": "Auto-completar todo",
+      "onboarding.sufficientToContinue": "¡Suficiente para continuar!",
+      
+      // Auth
+      "auth.title": "Comienza tu viaje con Quantum Self AI",
+      "auth.subtitle": "Ingresa tu correo para desbloquear tu potencial cuántico",
+      "auth.emailLabel": "Tu dirección de correo",
+      "auth.emailPlaceholder": "ejemplo@tucorreo.com",
+      "auth.submit": "Empezar ahora",
+      "auth.invalidEmail": "Por favor, ingresa un correo válido",
+      "auth.alreadyRegistered": "¡Bienvenido de vuelta!",
+      "auth.success": "¡Registro exitoso! ¡Comienza tu aventura!",
+      "auth.error": "Ocurrió un error. Por favor, intenta de nuevo.",
+      "auth.terms": "Al continuar, aceptas nuestros",
+      "auth.termsLink": "Términos de uso",
+      "auth.and": "y nuestra",
+      "auth.privacyLink": "Política de privacidad",
+      
+      // Premium
+      "premium.title": "Sube de nivel",
+      "premium.subtitle": "Accede a todas tus versiones cuánticas, conversaciones ilimitadas y conocimientos de IA revolucionarios para transformar tu vida.",
+      "premium.monthly": "Mensual",
+      "premium.yearly": "Anual",
+      "premium.free": "Gratis",
+      "premium.forever": "Para siempre",
+      "premium.popular": "Más popular",
+      "premium.chooseThisPlan": "Elegir este plan",
+      "premium.select": "Seleccionar",
+      "premium.testimonials": "Lo que dicen nuestros usuarios",
+      "premium.readyToUnlock": "¿Listo para desbloquear tu potencial cuántico?",
+      "premium.joinThousands": "Únete a miles de usuarios que transforman sus vidas a través de conversaciones con sus versiones cuánticas.",
+      "premium.startNow": "Empezar ahora",
       
       // Common
       "common.loading": "Cargando...",
@@ -452,6 +531,55 @@ const resources = {
       "chat.simulationMode": "Simulationsmodus",
       "chat.tavusVideoAvailable": "Tavus Video-Modus verfügbar",
       
+      // Onboarding
+      "onboarding.step": "Schritt {{current}} von {{total}}",
+      "onboarding.welcome": "Willkommen in der Quanten-Ära!",
+      "onboarding.namePrompt": "Lass uns anfangen, uns kennenzulernen. Wie sollen wir dich nennen?",
+      "onboarding.namePlaceholder": "Dein Vorname...",
+      "onboarding.picaAnalysis": "Erweiterte Pica KI-Analyse",
+      "onboarding.picaDescription": "Lade ein Foto hoch für eine vollständige biometrische Analyse und die Erstellung von Tavus-Avataren",
+      "onboarding.voiceCloning": "ElevenLabs Stimmklonierung",
+      "onboarding.voiceDescription": "Nimm 10 Sekunden deiner Stimme auf, um ultra-personalisierte Sprachantworten zu erstellen",
+      "onboarding.psychProfile": "Tiefgehendes psychologisches Profil",
+      "onboarding.quantumGeneration": "Quanten-Generierung",
+      "onboarding.selectVersions": "Wähle deine 3-5 bevorzugten Quantenversionen zum Start",
+      "onboarding.previous": "Zurück",
+      "onboarding.next": "Weiter",
+      "onboarding.enterQuantumUniverse": "Betritt das Quantenuniversum",
+      "onboarding.skipMinimal": "Überspringen (minimale Antworten)",
+      "onboarding.autoComplete": "Alles automatisch ausfüllen",
+      "onboarding.sufficientToContinue": "Ausreichend, um fortzufahren!",
+      
+      // Auth
+      "auth.title": "Beginne deine Reise mit Quantum Self AI",
+      "auth.subtitle": "Gib deine E-Mail ein, um dein Quantenpotenzial freizuschalten",
+      "auth.emailLabel": "Deine E-Mail-Adresse",
+      "auth.emailPlaceholder": "beispiel@deinemail.com",
+      "auth.submit": "Jetzt starten",
+      "auth.invalidEmail": "Bitte gib eine gültige E-Mail ein",
+      "auth.alreadyRegistered": "Willkommen zurück!",
+      "auth.success": "Registrierung erfolgreich! Starte dein Abenteuer!",
+      "auth.error": "Ein Fehler ist aufgetreten. Bitte versuche es erneut.",
+      "auth.terms": "Indem du fortfährst, stimmst du unseren",
+      "auth.termsLink": "Nutzungsbedingungen",
+      "auth.and": "und unserer",
+      "auth.privacyLink": "Datenschutzrichtlinie",
+      
+      // Premium
+      "premium.title": "Level up",
+      "premium.subtitle": "Greife auf alle deine Quantenversionen, unbegrenzte Gespräche und revolutionäre KI-Einblicke zu, um dein Leben zu transformieren.",
+      "premium.monthly": "Monatlich",
+      "premium.yearly": "Jährlich",
+      "premium.free": "Kostenlos",
+      "premium.forever": "Für immer",
+      "premium.popular": "Am beliebtesten",
+      "premium.chooseThisPlan": "Diesen Plan wählen",
+      "premium.select": "Auswählen",
+      "premium.testimonials": "Was unsere Nutzer sagen",
+      "premium.readyToUnlock": "Bereit, dein Quantenpotenzial freizuschalten?",
+      "premium.joinThousands": "Schließe dich Tausenden von Nutzern an, die ihr Leben durch Gespräche mit ihren Quantenversionen transformieren.",
+      "premium.startNow": "Jetzt starten",
+      
       // Common
       "common.loading": "Laden...",
       "common.error": "Fehler",
@@ -469,7 +597,53 @@ const resources = {
       "common.pause": "Pausieren",
       "common.stop": "Stoppen",
       "common.retry": "Wiederholen",
-      "common.skip": "Überspringen"
+      "common.skip": "Überspringen",
+      
+      // Quantum Versions
+      "versions.youngSelf": "Du mit 16",
+      "versions.presentSelf": "Du mit 30",
+      "versions.wiseSelf": "Du mit 60",
+      "versions.successSelf": "Dein Paralleler Erfolg",
+      "versions.zenSelf": "Dein Paralleles Zen",
+      "versions.youngDescription": "Voller Energie und Träume",
+      "versions.presentDescription": "Optimierte und ausgewogene Gegenwart",
+      "versions.wiseDescription": "Weise und erfahren",
+      "versions.successDescription": "Der alle Träume erreicht hat",
+      "versions.zenDescription": "Perfekt ausgewogen und gelassen",
+      
+      // Questions
+      "questions.howDoesItWork": "Wie funktioniert Quantum Self AI?",
+      "questions.tellMeAboutVersions": "Kannst du mir von anderen Quantenversionen erzählen?",
+      "questions.whatFeatures": "Was sind die Funktionen der App?",
+      "questions.howVoiceCloning": "Wie funktioniert die Stimmklonierung?",
+      "questions.handleStress": "Wie geht man mit täglichem Stress um?",
+      "questions.careerAdvice": "Welche Ratschläge für meine Karriere?",
+      "questions.maintainMotivation": "Wie bleibt man motiviert?",
+      "questions.whatWouldYouDo": "Was würdest du an meiner Stelle tun?",
+      "questions.greatestLearning": "Was ist deine größte Erkenntnis?",
+      
+      // Status Messages
+      "status.geminiConnected": "Gemini KI Verbunden",
+      "status.geminiDisconnected": "Gemini KI Getrennt",
+      "status.elevenLabsActive": "ElevenLabs KI",
+      "status.tavusAvailable": "Tavus Avatar",
+      "status.simulationMode": "Simulationsmodus",
+      "status.voiceCloned": "Stimme erfolgreich geklont!",
+      "status.analysisComplete": "Analyse abgeschlossen!",
+      "status.generationInProgress": "Generierung läuft...",
+      
+      // Errors
+      "errors.connectionFailed": "Verbindung fehlgeschlagen",
+      "errors.apiKeyMissing": "API-Schlüssel fehlt",
+      "errors.generationError": "Generierungsfehler",
+      "errors.uploadError": "Upload-Fehler",
+      "errors.recordingError": "Aufnahmefehler",
+      "errors.playbackError": "Wiedergabefehler",
+      
+      // Footer
+      "footer.allRightsReserved": "Alle Rechte vorbehalten.",
+      "footer.exploreQuantumPossibilities": "Entdecke alle deine Quantenmöglichkeiten.",
+      "footer.builtWith": "Gebaut mit"
     }
   }
 };
