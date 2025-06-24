@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Brain, Star, Crown, Trophy, ChevronRight, Sparkles, Zap, Play, LogIn, UserPlus } from 'lucide-react';
+import { Brain, Star, Crown, Trophy, ChevronRight, Sparkles, Zap, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthContext } from '../context/AuthContext';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import AuthModal from '../components/AuthModal';
+import AuthForm from '../components/AuthForm';
 import QuantumParticles from '../components/QuantumParticles';
 import TavusVideoDemo from '../components/TavusVideoDemo';
 import TestimonialCarousel from '../components/TestimonialCarousel';
@@ -14,16 +14,14 @@ import toast from 'react-hot-toast';
 
 const Landing = () => {
   const { t } = useTranslation();
-  const { isAuthenticated, profile } = useAuthContext();
+  const { isRegistered, profile, loading } = useAuthContext();
   const navigate = useNavigate();
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState<boolean | null>(null);
+  const [showAuthForm, setShowAuthForm] = useState(false);
 
   const quantumVersions = [
     {
       title: t('features.past'),
-      description: t('features.past') === 'Your Motivated Past' 
+      description: t('features.past') === 'Your Motivated Past'
         ? 'Rediscover the energy and optimism of your younger self. Remember why you started.'
         : 'Retrouve l\'énergie et l\'optimisme de ton moi plus jeune. Rappelle-toi pourquoi tu as commencé.',
       icon: Star,
@@ -73,38 +71,50 @@ const Landing = () => {
     },
   ];
 
-  // Vérifier si l'onboarding est complété
+  // Rediriger immédiatement vers /onboarding si enregistré
   useEffect(() => {
-    if (isAuthenticated && profile) {
-      setIsOnboardingComplete(profile.onboardingComplete ?? false);
-    } else {
-      setIsOnboardingComplete(false);
+    if (!loading && profile !== null && isRegistered) {
+      console.debug(`🔐 Registration check: isRegistered=${isRegistered}`);
+      console.debug(`🧭 Redirection automatique vers /onboarding`);
+      navigate('/onboarding', { replace: true });
     }
-  }, [isAuthenticated, profile]);
+  }, [isRegistered, profile, loading, navigate]);
 
-  const handleAuthClick = (mode: 'signin' | 'signup') => {
-    setAuthMode(mode);
-    setShowAuthModal(true);
+  // Gérer le clic sur "Continuer"
+  const handleAuthClick = () => {
+    if (isRegistered) {
+      console.debug(`🧭 Redirection vers /onboarding (utilisateur enregistré)`);
+      navigate('/onboarding', { replace: true });
+    } else {
+      setShowAuthForm(true);
+    }
   };
 
-  const handleAuthSuccess = (mode: 'signin' | 'signup') => {
-    setShowAuthModal(false);
-    if (mode === 'signup' || !profile?.onboardingComplete) {
-      console.debug('🧭 Redirection vers onboarding après authentification');
-      navigate('/onboarding');
-    } else {
-      console.debug('🧭 Redirection vers dashboard');
-      navigate('/dashboard');
-    }
+  const handleAuthSuccess = () => {
+    setShowAuthForm(false);
+    console.debug(`🧭 Redirection vers /onboarding après enregistrement réussi`);
+    navigate('/onboarding', { replace: true });
   };
 
   const handleDemoClick = () => {
     toast('🎥 Démo en cours de chargement...', {
       style: { background: '#fefcbf', color: '#b45309' },
     });
-    // Défile vers la section démo
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Afficher un loader pendant que l'état d'enregistrement est indéterminé
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
@@ -127,7 +137,7 @@ const Landing = () => {
             </div>
             <h1 className="text-2xl font-bold text-white">Quantum Self AI</h1>
           </motion.div>
-          
+
           <div className="hidden md:flex items-center gap-8">
             <motion.a
               initial={{ opacity: 0, y: -10 }}
@@ -157,64 +167,28 @@ const Landing = () => {
               {t('nav.pricing')}
             </motion.a>
             <LanguageSwitcher />
-            
-            {isAuthenticated ? (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Link 
-                  to={isOnboardingComplete ? '/dashboard' : '/onboarding'} 
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
-                >
-                  {isOnboardingComplete ? 'Dashboard' : t('nav.start')}
-                </Link>
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="flex items-center gap-3"
-              >
-                <button
-                  onClick={() => handleAuthClick('signin')}
-                  className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
-                >
-                  <LogIn className="w-4 h-4" />
-                  Connexion
-                </button>
-                <button
-                  onClick={() => handleAuthClick('signup')}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
-                >
-                  {t('nav.start')}
-                </button>
-              </motion.div>
-            )}
+            <motion.button
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              onClick={handleAuthClick}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+            >
+              {t('nav.start')}
+              <ChevronRight className="w-4 h-4" />
+            </motion.button>
           </div>
 
           {/* Mobile */}
           <div className="md:hidden flex items-center gap-3">
             <LanguageSwitcher />
-            {!isAuthenticated && (
-              <button
-                onClick={() => handleAuthClick('signup')}
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm"
-              >
-                <UserPlus className="w-4 h-4 inline-block mr-1" />
-                {t('nav.start')}
-              </button>
-            )}
-            {isAuthenticated && (
-              <Link
-                to={isOnboardingComplete ? '/dashboard' : '/onboarding'}
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm"
-              >
-                {isOnboardingComplete ? 'Dashboard' : t('nav.start')}
-              </Link>
-            )}
+            <button
+              onClick={handleAuthClick}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm"
+            >
+              {t('nav.start')}
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </nav>
       </header>
@@ -250,7 +224,7 @@ const Landing = () => {
               {t('hero.subtitle')}
             </motion.span>
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -259,31 +233,21 @@ const Landing = () => {
           >
             {t('hero.description')}
           </motion.p>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            {isAuthenticated ? (
-              <Link
-                to={isOnboardingComplete ? '/dashboard' : '/onboarding'}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-              >
-                {isOnboardingComplete ? 'Accéder au Dashboard' : t('hero.cta')}
-                <ChevronRight className="w-5 h-5" />
-              </Link>
-            ) : (
-              <button
-                onClick={() => handleAuthClick('signup')}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-              >
-                {t('hero.cta')}
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            )}
-            
+            <button
+              onClick={handleAuthClick}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            >
+              {t('nav.start')}
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
             <button
               onClick={handleDemoClick}
               className="inline-flex items-center gap-2 bg-white/10 backdrop-blur text-white px-6 py-3 rounded-xl font-medium hover:bg-white/20 transition-all duration-300 border border-white/20"
@@ -312,12 +276,12 @@ const Landing = () => {
               {t('nav.demo') === 'Demo' ? 'Discover the magic in action' : 'Découvre la magie en action'}
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              {t('nav.demo') === 'Demo' 
+              {t('nav.demo') === 'Demo'
                 ? 'See how your quantum versions come to life with ultra-realistic AI avatars'
                 : 'Vois comment tes versions quantiques prennent vie avec des avatars IA ultra-réalistes'}
             </p>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -358,7 +322,7 @@ const Landing = () => {
             {t('features.subtitle')}
           </motion.p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quantumVersions.map((version, index) => {
             const Icon = version.icon;
@@ -383,10 +347,10 @@ const Landing = () => {
                       <div className="text-lg font-bold text-white">{version.age}</div>
                     </div>
                   </div>
-                  
+
                   <h3 className="text-xl font-semibold text-white mb-3">{version.title}</h3>
                   <p className="text-gray-300 text-sm mb-4 leading-relaxed">{version.description}</p>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {version.traits.map((trait, traitIndex) => (
                       <motion.span
@@ -401,7 +365,7 @@ const Landing = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
               </motion.div>
             );
@@ -462,7 +426,7 @@ const Landing = () => {
 
           <div className="relative z-10">
             <h2 className="text-4xl font-bold text-white mb-4">
-              {t('nav.features') === 'Features' 
+              {t('nav.features') === 'Features'
                 ? 'Ready to meet all your versions?'
                 : 'Prêt à rencontrer toutes les versions de votre IA ?'}
             </h2>
@@ -471,23 +435,13 @@ const Landing = () => {
                 ? 'It only takes a few minutes to set up your quantum profile and start your transformative journey.'
                 : 'Il ne faut que quelques minutes pour configurer votre profil quantique et commencer votre voyage transformateur.'}
             </p>
-            {isAuthenticated ? (
-              <Link
-                to={isOnboardingComplete ? '/dashboard' : '/onboarding'}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
-              >
-                {isOnboardingComplete ? 'Go to Dashboard' : 'Complete Onboarding'}
-                <ChevronRight className="w-5 h-5" />
-              </Link>
-            ) : (
-              <button
-                onClick={() => handleAuthClick('signup')}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
-              >
-                {t('nav.features') === 'Features' ? 'Start Your Journey' : 'Commencer le voyage'}
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            )}
+            <button
+              onClick={handleAuthClick}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
+            >
+              {t('nav.start')}
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </motion.div>
       </section>
@@ -501,7 +455,7 @@ const Landing = () => {
             </div>
             <span className="text-xl font-semibold text-white">Quantum Self</span>
           </div>
-          
+
           <div className="text-center text-gray-400 space-y-2">
             <p className="text-sm">© 2025 Quantum Self AI. All rights reserved.</p>
             <p className="text-sm">{t('footer.description')}</p>
@@ -519,10 +473,9 @@ const Landing = () => {
         </div>
       </footer>
 
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        defaultMode={authMode}
+      <AuthForm
+        isOpen={showAuthForm}
+        onClose={() => setShowAuthForm(false)}
         onSuccess={handleAuthSuccess}
       />
     </div>
