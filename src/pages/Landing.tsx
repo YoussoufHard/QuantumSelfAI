@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 const Landing = () => {
   const { t } = useTranslation();
-  const { isRegistered, profile, loading, registerEmail } = useAuthContext();
+  const { isRegistered, visitor, loading, registerEmail } = useAuthContext();
   const navigate = useNavigate();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
@@ -72,18 +72,9 @@ const Landing = () => {
   ];
 
   useEffect(() => {
-    console.debug(`🔍 useEffect déclenché: loading=${loading}, isRegistered=${isRegistered}, profile=${JSON.stringify(profile)}`);
-    if (loading || !profile || !isRegistered) return;
-
-    console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
-    if (profile.onboardingcomplete) {
-      console.debug(`🧭 Redirection automatique vers /dashboard`);
-      navigate('/dashboard', { replace: true });
-    } else {
-      console.debug(`🧭 Redirection automatique vers /onboarding`);
-      navigate('/onboarding', { replace: true });
-    }
-  }, [isRegistered, profile, loading, navigate]);
+    if (loading || !visitor || !isRegistered) return;
+    navigate('/onboarding', { replace: true });
+  }, [isRegistered, visitor, loading, navigate]);
 
   const handleAuthClick = () => {
     setShowAuthForm(true);
