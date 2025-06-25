@@ -464,11 +464,12 @@ const Landing = () => {
               <span className="font-semibold text-blue-300">Bolt</span> */}
             </motion.div>
 
-            <a href="https://bolt.new" target="_blank" rel="noopener">
-                            <span className="text-gray-400">Built with</span>
-              <span className="font-semibold text-blue-300">Bolt</span>
-  <img src="badge.png" alt="Built with Bolt.new" style="width: 120px;" />
+<a href="https://bolt.new" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2">
+  <span className="text-gray-400">Built with</span>
+  <span className="font-semibold text-blue-300">Bolt</span>
+  <img src="badge.png" alt="Built with Bolt.new" className="w-30" />
 </a>
+
 
           </div>
         </div>
