@@ -72,15 +72,16 @@ const Landing = () => {
   ];
 
   useEffect(() => {
-    if (!loading && profile && isRegistered) {
-      console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
-      if (profile.onboardingcomplete) {
-        console.debug(`🧭 Redirection automatique vers /dashboard`);
-        navigate('/dashboard', { replace: true });
-      } else {
-        console.debug(`🧭 Redirection automatique vers /onboarding`);
-        navigate('/onboarding', { replace: true });
-      }
+    console.debug(`🔍 useEffect déclenché: loading=${loading}, isRegistered=${isRegistered}, profile=${JSON.stringify(profile)}`);
+    if (loading || !profile || !isRegistered) return;
+
+    console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
+    if (profile.onboardingcomplete) {
+      console.debug(`🧭 Redirection automatique vers /dashboard`);
+      navigate('/dashboard', { replace: true });
+    } else {
+      console.debug(`🧭 Redirection automatique vers /onboarding`);
+      navigate('/onboarding', { replace: true });
     }
   }, [isRegistered, profile, loading, navigate]);
 
@@ -90,7 +91,6 @@ const Landing = () => {
 
   const handleAuthSuccess = async (email: string) => {
     console.debug(`🚀 handleAuthSuccess appelé avec email: ${email}`);
-ქ
     try {
       const { exists } = await registerEmail(email);
       console.debug(`✅ registerEmail réussi, exists: ${exists}`);
