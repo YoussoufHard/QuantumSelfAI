@@ -786,7 +786,14 @@ const Chat = () => {
                 }`}
               >
                 <p>{msg.content}</p>
-                {msg.audioBlob && audioEnabled && (
+                {/* Always show play button for AI audio responses if audioBlob exists */}
+                {msg.audioBlob && msg.sender === 'quantum' && (
+                  <div className="mt-2">
+                    <AudioPlayer audioBlob={msg.audioBlob} className="w-full" />
+                  </div>
+                )}
+                {/* For user messages, only show audio if audioEnabled is on */}
+                {msg.audioBlob && msg.sender === 'user' && audioEnabled && (
                   <div className="mt-2">
                     <AudioPlayer audioBlob={msg.audioBlob} className="w-full" />
                   </div>
@@ -976,9 +983,13 @@ const Chat = () => {
               onEnded={() => {
                 setIsPlayingResponse(false);
                 setCurrentAudio(null);
-                if (voiceMode && !isMicAccessError) {
-                  console.debug('🔄 Restarting recording after playback');
-                  startVoiceRecording();
+                // In voice mode, restart recording after playback if not waiting for response or error
+                if (voiceMode && !isMicAccessError && !isWaitingForResponse) {
+                  setTimeout(() => {
+                    if (voiceMode && !isMicAccessError && !isWaitingForResponse) {
+                      startVoiceRecording();
+                    }
+                  }, 400); // slight delay to avoid race
                 }
               }}
             />
