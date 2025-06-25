@@ -278,8 +278,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Demo**: [quantumself.ai](https://incredible-lokum-394313.netlify.app/)
 - **Email**: ytangara2003@gmail.com
-- **Discord**: [Join our community](https://discord.gg/quantumself)
-- **Twitter**: [@QuantumSelfAI](https://twitter.com/QuantumSelfAI)
+- **Discord**: [Join our community](https://discord.gg/quantumself) - not now available
+- **Twitter**: [@QuantumSelfAI](https://twitter.com/QuantumSelfAI) - not now available
 
 ---
 
