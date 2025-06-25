@@ -460,9 +460,16 @@ const Landing = () => {
               className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30"
             >
               <Zap className="w-4 h-4 text-blue-400" />
-              <span className="text-gray-400">Built with</span>
-              <span className="font-semibold text-blue-300">Bolt</span>
+              {/* <span className="text-gray-400">Built with</span>
+              <span className="font-semibold text-blue-300">Bolt</span> */}
             </motion.div>
+
+            <a href="https://bolt.new" target="_blank" rel="noopener">
+                            <span className="text-gray-400">Built with</span>
+              <span className="font-semibold text-blue-300">Bolt</span>
+  <img src="https://bolt.new/badge.svg" alt="Built with Bolt.new" style="width: 120px;" />
+</a>
+
           </div>
         </div>
       </footer>
