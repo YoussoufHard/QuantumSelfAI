@@ -7,6 +7,7 @@ import VersionCard from '../components/VersionCard';
 import Navigation from '../components/Navigation';
 import EmotionalWeather from '../components/EmotionalWeather';
 import QuantumTimeline from '../components/QuantumTimeline';
+import badge from "./badge.png"; // Si ton badge est dans le même dossier que ton fichier Landing.j
 
 const Dashboard = () => {
   const { user, insights, setCurrentVersion } = useApp();
