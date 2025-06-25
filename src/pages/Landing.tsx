@@ -72,7 +72,7 @@ const Landing = () => {
   ];
 
   // Redirect only if registered and onboarding is complete
-  useEffect(() => {
+  //useEffect(() => {
   //   if (!loading && profile && isRegistered && profile.onboardingcomplete) {
   //     console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
   //     console.debug(`🧭 Redirection automatique vers /dashboard`);
