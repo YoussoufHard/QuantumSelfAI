@@ -458,15 +458,7 @@ const Landing = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30"
-            >
-{/* Section "Built with Bolt" + badge */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-black bg-opacity-70 px-3 py-2 rounded shadow-lg"
-      >
-        <Zap className="w-4 h-4 text-blue-400" />
+         <Zap className="w-4 h-4 text-blue-400" />
         <span className="text-gray-400 text-sm">Built with</span>
         <span className="font-semibold text-blue-300 text-sm">Bolt</span>
 
@@ -482,6 +474,8 @@ const Landing = () => {
             className="w-8 h-8 object-contain"
           />
         </a>
+      </motion.div>
+
           </div>
         </div>
       </footer>
