@@ -457,7 +457,8 @@ const Landing = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30"
+              className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30">
+              
          <Zap className="w-4 h-4 text-blue-400" />
         <span className="text-gray-400 text-sm">Built with</span>
         <span className="font-semibold text-blue-300 text-sm">Bolt</span>
