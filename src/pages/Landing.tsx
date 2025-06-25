@@ -73,12 +73,12 @@ const Landing = () => {
 
   // Redirect only if registered and onboarding is complete
   useEffect(() => {
-    if (!loading && profile && isRegistered) {
-      console.debug(`🔐 Registration check: isRegistered=${isRegistered},  onboardingcomplete=${profile.onboardingcomplete}`);
-      console.debug(`🧭 Redirection automatique vers /dashboard`);
-      navigate('/dashboard', { replace: true });
-    }
-  }, [isRegistered, profile, loading, navigate]);
+  //   if (!loading && profile && isRegistered && profile.onboardingcomplete) {
+  //     console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
+  //     console.debug(`🧭 Redirection automatique vers /dashboard`);
+  //     navigate('/dashboard', { replace: true });
+  //   }
+  // }, [isRegistered, profile, loading, navigate]);
 
   // Handle clicking "Commencer" or submitting email
   const handleAuthClick = () => {
