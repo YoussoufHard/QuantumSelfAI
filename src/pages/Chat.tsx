@@ -608,11 +608,11 @@ const Chat = () => {
   }
 
   if (videoMode) {
-    // Définir les IDs (à adapter dynamiquement si besoin)
-    const replicaId = 'r292fa3a149f';
+    // Utilisation des IDs Tavus fournis par l'utilisateur
+    const replicaId = 'rf890f824d11';
     const personaId = 'p131bc833d87';
-    // Générer un nom unique à chaque ouverture
-    const conversationName = `coaching-${tavusConversationKey}`;
+    // Générer un nom unique à chaque ouverture, préfixé par coachQuantumSeftAi
+    const conversationName = `coachQuantumSeftAi-${tavusConversationKey}`;
     return (
       <div className="flex min-h-screen bg-slate-50">
         <Navigation />
