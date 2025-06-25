@@ -5,6 +5,7 @@ interface AuthContextType {
   visitor: Visitor | null;
   loading: boolean;
   isRegistered: boolean;
+  isAuthenticated: boolean;
   registerEmail: (email: string) => Promise<{ exists: boolean }>;
   clearRegistration: () => Promise<void>;
   completeOnboarding: () => Promise<void>;
@@ -19,6 +20,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     visitor,
     loading,
     isRegistered,
+    isAuthenticated: !!visitor && isRegistered,
     registerEmail,
     clearRegistration,
     completeOnboarding,
