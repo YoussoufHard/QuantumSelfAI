@@ -33,6 +33,8 @@ import { ElevenLabsService } from '../services/elevenlabs';
 import AudioPlayer from '../components/AudioPlayer';
 import toast from 'react-hot-toast';
 import * as Sentry from '@sentry/react';
+import badge from "./badge.png"; // Si ton badge est dans le même dossier que ton fichier Landing.jsx
+
 
 const quantumVersions: QuantumVersion[] = [
   {
