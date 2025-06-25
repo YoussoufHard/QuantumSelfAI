@@ -89,8 +89,7 @@ const Landing = () => {
       toast.success(exists ? t('auth.welcomeBack') : t('auth.signupSuccess'), {
         id: 'auth-toast',
       });
-      console.debug(`🧭 Navigation vers /onboarding`);
-      navigate('/onboarding', { replace: true });
+      // La navigation est gérée par le useEffect, donc on ne fait rien ici
     } catch (error) {
       console.error('❌ Erreur dans handleAuthSuccess:', error);
       toast.error(t('auth.error'), {
