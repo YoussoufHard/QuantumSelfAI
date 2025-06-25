@@ -2,47 +2,45 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import * as Sentry from '@sentry/react';
 
-export interface AuthUser {
+export interface Visitor {
   id: string;
   email: string;
   onboardingcomplete: boolean;
 }
 
-export interface AuthState {
-  profile: AuthUser | null;
+export interface VisitorAuthState {
+  visitor: Visitor | null;
   loading: boolean;
   isRegistered: boolean;
 }
 
 export function useAuth() {
-  const [authState, setAuthState] = useState<AuthState>({
-    profile: null,
+  const [authState, setAuthState] = useState<VisitorAuthState>({
+    visitor: null,
     loading: true,
     isRegistered: false,
   });
 
-  const fetchVisitorProfile = useCallback(async (email: string): Promise<AuthUser | null> => {
+  const fetchVisitor = useCallback(async (email: string): Promise<Visitor | null> => {
     try {
       const { data, error } = await supabase
-        .from('profiles') // corrigé ici
-        .select('id, email, onboarding_complete')
+        .from('visitors')
+        .select('id, email, onboardingcomplete')
         .eq('email', email)
         .single();
-
       if (error && error.code !== 'PGRST116') {
-        throw new Error(`Erreur profil: ${error.message}`);
+        throw new Error(`Erreur visitor: ${error.message}`);
       }
-
       if (data) {
         return {
           id: data.id,
           email: data.email,
-          onboardingcomplete: data.onboarding_complete || false,
+          onboardingcomplete: data.onboardingcomplete || false,
         };
       }
       return null;
     } catch (error: any) {
-      console.error('❌ Erreur fetchVisitorProfile:', error.message);
+      console.error('❌ Erreur fetchVisitor:', error.message);
       Sentry.captureException(error);
       return null;
     }
@@ -51,41 +49,39 @@ export function useAuth() {
   useEffect(() => {
     const storedEmail = localStorage.getItem('quantum_self_email');
     if (storedEmail) {
-      fetchVisitorProfile(storedEmail).then(profile => {
+      fetchVisitor(storedEmail).then(visitor => {
         setAuthState({
-          profile,
+          visitor,
           loading: false,
-          isRegistered: !!profile,
+          isRegistered: !!visitor,
         });
-        console.debug(`🔐 Initial state: ${profile ? `REGISTERED ${storedEmail}` : 'NOT_REGISTERED'}`);
+        console.debug(`🔐 Initial state: ${visitor ? `REGISTERED ${storedEmail}` : 'NOT_REGISTERED'}`);
       });
     } else {
-      setAuthState({ profile: null, loading: false, isRegistered: false });
+      setAuthState({ visitor: null, loading: false, isRegistered: false });
       console.debug('🔐 Initial state: NOT_REGISTERED');
     }
-  }, [fetchVisitorProfile]);
+  }, [fetchVisitor]);
 
   const registerEmail = useCallback(async (email: string) => {
     setAuthState(prev => ({ ...prev, loading: true }));
     try {
-      const { data: existingProfile, error: selectError } = await supabase
-        .from('profiles') // corrigé ici
-        .select('id, email, onboarding_complete')
+      const { data: existingVisitor, error: selectError } = await supabase
+        .from('visitors')
+        .select('id, email, onboardingcomplete')
         .eq('email', email)
         .single();
-
       if (selectError && selectError.code !== 'PGRST116') {
         throw new Error(`Erreur vérification email: ${selectError.message}`);
       }
-
-      if (existingProfile) {
-        const profile: AuthUser = {
-          id: existingProfile.id,
-          email: existingProfile.email,
-          onboardingcomplete: existingProfile.onboarding_complete || false,
+      if (existingVisitor) {
+        const visitor: Visitor = {
+          id: existingVisitor.id,
+          email: existingVisitor.email,
+          onboardingcomplete: existingVisitor.onboardingcomplete || false,
         };
         setAuthState({
-          profile,
+          visitor,
           loading: false,
           isRegistered: true,
         });
@@ -93,29 +89,24 @@ export function useAuth() {
         console.debug(`🔐 Email existant: ${email}`);
         return { exists: true };
       }
-
-      const { data: newProfile, error: insertError } = await supabase
-        .from('profiles') // corrigé ici
+      const { data: newVisitor, error: insertError } = await supabase
+        .from('visitors')
         .insert({
           email,
-          name: '', // nom vide par défaut
-          onboarding_complete: false,
-          language: 'fr',
+          onboardingcomplete: false,
         })
-        .select('id, email, onboarding_complete')
+        .select('id, email, onboardingcomplete')
         .single();
-
       if (insertError) {
         throw new Error(`Erreur enregistrement email: ${insertError.message}`);
       }
-
-      const profile: AuthUser = {
-        id: newProfile.id,
-        email: newProfile.email,
-        onboardingcomplete: newProfile.onboarding_complete || false,
+      const visitor: Visitor = {
+        id: newVisitor.id,
+        email: newVisitor.email,
+        onboardingcomplete: newVisitor.onboardingcomplete || false,
       };
       setAuthState({
-        profile,
+        visitor,
         loading: false,
         isRegistered: true,
       });
@@ -133,7 +124,7 @@ export function useAuth() {
   const clearRegistration = useCallback(async () => {
     try {
       setAuthState({
-        profile: null,
+        visitor: null,
         loading: false,
         isRegistered: false,
       });
@@ -147,17 +138,17 @@ export function useAuth() {
   }, []);
 
   const completeOnboarding = useCallback(async () => {
-    if (!authState.profile) return;
+    if (!authState.visitor) return;
     setAuthState(prev => ({ ...prev, loading: true }));
     try {
       const { error } = await supabase
-        .from('profiles') // corrigé ici
-        .update({ onboarding_complete: true })
-        .eq('id', authState.profile.id);
+        .from('visitors')
+        .update({ onboardingcomplete: true })
+        .eq('id', authState.visitor.id);
       if (error) throw new Error(`Erreur mise à jour onboarding: ${error.message}`);
       setAuthState(prev => ({
         ...prev,
-        profile: { ...prev.profile!, onboardingcomplete: true },
+        visitor: { ...prev.visitor!, onboardingcomplete: true },
         loading: false,
       }));
       console.debug('🔐 Onboarding complété');
@@ -167,7 +158,7 @@ export function useAuth() {
       setAuthState(prev => ({ ...prev, loading: false }));
       throw error;
     }
-  }, [authState.profile]);
+  }, [authState.visitor]);
 
   return {
     ...authState,
