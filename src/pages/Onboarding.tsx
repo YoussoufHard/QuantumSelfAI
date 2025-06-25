@@ -305,7 +305,7 @@ const Onboarding = () => {
 
         if (isForInput) {
           setVoiceRecordingStage('processing');
-          toast.loading('🎤 Transcription en cours...', { id: 'voice-input' });
+          console.info('🎤 Transcription en cours...');
 
           // Utilisation d'une transcription basique (Web Speech API) pour la partie psychologie
           const basicTranscribe = async (audioBlob: Blob): Promise<string> => {
@@ -315,18 +315,21 @@ const Onboarding = () => {
             return '';
           };
           // Remplacer l'appel ElevenLabsService.transcribeAudio par la version basique
-          const transcribedText = await basicTranscribe(audioBlob);
+          let transcribedText = await basicTranscribe(audioBlob);
+          if (!transcribedText) {
+            transcribedText = '(Aucune transcription détectée, veuillez saisir votre réponse)';
+          }
           const questionId = psychologyQuestions[currentQuestionIndex].id;
           setFormData(prev => ({
             ...prev,
             questionnaire: {
               ...prev.questionnaire,
-              [questionId]: transcribedText || prev.questionnaire[questionId] || ''
+              [questionId]: transcribedText
             }
           }));
           setVoiceRecordingStage('complete');
           setIsVoiceInput(false);
-          toast.success('✅ Réponse vocalisée transcrite (mode basique) !', { id: 'voice-input' });
+          console.info('✅ Réponse vocalisée transcrite (mode basique) !');
         } else {
           setRecordedAudioBlob(audioBlob);
           setVoiceRecordingStage('processing');
