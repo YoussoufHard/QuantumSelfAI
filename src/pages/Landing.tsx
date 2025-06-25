@@ -72,18 +72,7 @@ const Landing = () => {
       traits: ['serene', 'harmonious', 'fulfilled'],
     },
   ];
-
-  <a
-  href="https://bolt.new"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-black bg-opacity-70 px-3 py-2 rounded shadow-lg"
->
-  <img src={badge} alt="Built with Bolt.new" className="w-8 h-8" />
-  <span className="text-gray-400 text-sm">Built with</span>
-  <span className="font-semibold text-blue-300 text-sm">Bolt</span>
-</a>
-
+  
 
   useEffect(() => {
     if (loading || !visitor || !isRegistered) return;
@@ -151,6 +140,17 @@ const Landing = () => {
               <Brain className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white">Quantum Self AI</h1>
+            <a
+  href="https://bolt.new"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-black bg-opacity-70 px-3 py-2 rounded shadow-lg"
+>
+  <img src={badge} alt="Built with Bolt.new" className="w-8 h-8" />
+  <span className="text-gray-400 text-sm">Built with</span>
+  <span className="font-semibold text-blue-300 text-sm">Bolt</span>
+</a>
+
           </motion.div>
 
           <div className="hidden md:flex items-center gap-8">
