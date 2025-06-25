@@ -104,7 +104,6 @@ export class PicaService {
 
         if (!this.isApiConfigured() || !(await this.checkQuota())) {
           console.warn('Mode simulation - Biometric analysis simulated');
-          toast('🔍 Simulation mode - Biometric analysis');
           return this.getSimulatedAnalysis();
         }
 
@@ -145,7 +144,7 @@ export class PicaService {
 
         Sentry.captureException(error);
         console.error(`${message}:`, error);
-        toast.error(`🔍 ${message}, using simulation mode`);
+        toast.error(`🔍 ${message}`);
         return this.getSimulatedAnalysis();
       }
     });
@@ -163,7 +162,6 @@ export class PicaService {
 
         if (!this.isApiConfigured() || !(await this.checkQuota())) {
           console.warn('Mode simulation - Image enhancement simulated');
-          toast('🖼️ Simulation mode - Image enhancement');
           return imageFile;
         }
 
@@ -221,7 +219,6 @@ export class PicaService {
 
         if (!this.isApiConfigured() || !(await this.checkQuota())) {
           console.warn('Mode simulation - Avatar variations simulated');
-          toast('🎭 Simulation mode - Avatar variations');
           return ageModifications.map(() => imageFile);
         }
 
