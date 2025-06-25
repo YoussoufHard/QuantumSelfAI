@@ -77,7 +77,7 @@ Secure, structured storage of user profiles, quantum versions, conversations, an
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/quantumself-ai.git
+git clone https://github.com/YoussoufHard/QuantumSelfAI.git
 cd quantumself-ai
 ```
 
