@@ -467,7 +467,7 @@ const Landing = () => {
             <a href="https://bolt.new" target="_blank" rel="noopener">
                             <span className="text-gray-400">Built with</span>
               <span className="font-semibold text-blue-300">Bolt</span>
-  <img src="https://bolt.new/badge.svg" alt="Built with Bolt.new" style="width: 120px;" />
+  <img src="badge.png" alt="Built with Bolt.new" style="width: 120px;" />
 </a>
 
           </div>
