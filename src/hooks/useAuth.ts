@@ -24,8 +24,8 @@ export function useAuth() {
   const fetchVisitorProfile = useCallback(async (email: string): Promise<AuthUser | null> => {
     try {
       const { data, error } = await supabase
-        .from('visitors')
-        .select('id, email, onboardingcomplete')
+        .from('profiles') // corrigé ici
+        .select('id, email, onboarding_complete')
         .eq('email', email)
         .single();
 
@@ -37,7 +37,7 @@ export function useAuth() {
         return {
           id: data.id,
           email: data.email,
-          onboardingcomplete: data.onboardingcomplete || false,
+          onboardingcomplete: data.onboarding_complete || false,
         };
       }
       return null;
@@ -68,9 +68,9 @@ export function useAuth() {
   const registerEmail = useCallback(async (email: string) => {
     setAuthState(prev => ({ ...prev, loading: true }));
     try {
-      const { data: existingVisitor, error: selectError } = await supabase
-        .from('visitors')
-        .select('id, email, onboardingcomplete')
+      const { data: existingProfile, error: selectError } = await supabase
+        .from('profiles') // corrigé ici
+        .select('id, email, onboarding_complete')
         .eq('email', email)
         .single();
 
@@ -78,11 +78,11 @@ export function useAuth() {
         throw new Error(`Erreur vérification email: ${selectError.message}`);
       }
 
-      if (existingVisitor) {
+      if (existingProfile) {
         const profile: AuthUser = {
-          id: existingVisitor.id,
-          email: existingVisitor.email,
-          onboardingcomplete: existingVisitor.onboardingcomplete || false,
+          id: existingProfile.id,
+          email: existingProfile.email,
+          onboardingcomplete: existingProfile.onboarding_complete || false,
         };
         setAuthState({
           profile,
@@ -94,13 +94,15 @@ export function useAuth() {
         return { exists: true };
       }
 
-      const { data: newVisitor, error: insertError } = await supabase
-        .from('visitors')
+      const { data: newProfile, error: insertError } = await supabase
+        .from('profiles') // corrigé ici
         .insert({
           email,
-          onboardingcomplete: false,
+          name: '', // nom vide par défaut
+          onboarding_complete: false,
+          language: 'fr',
         })
-        .select('id, email, onboardingcomplete')
+        .select('id, email, onboarding_complete')
         .single();
 
       if (insertError) {
@@ -108,9 +110,9 @@ export function useAuth() {
       }
 
       const profile: AuthUser = {
-        id: newVisitor.id,
-        email: newVisitor.email,
-        onboardingcomplete: newVisitor.onboardingcomplete || false,
+        id: newProfile.id,
+        email: newProfile.email,
+        onboardingcomplete: newProfile.onboarding_complete || false,
       };
       setAuthState({
         profile,
@@ -149,8 +151,8 @@ export function useAuth() {
     setAuthState(prev => ({ ...prev, loading: true }));
     try {
       const { error } = await supabase
-        .from('visitors')
-        .update({ onboardingcomplete: true })
+        .from('profiles') // corrigé ici
+        .update({ onboarding_complete: true })
         .eq('id', authState.profile.id);
       if (error) throw new Error(`Erreur mise à jour onboarding: ${error.message}`);
       setAuthState(prev => ({
