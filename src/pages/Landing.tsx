@@ -11,7 +11,7 @@ import TavusVideoDemo from '../components/TavusVideoDemo';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import PricingTiers from '../components/PricingTiers';
 import toast from 'react-hot-toast';
-import badge from "./badge.png"; //
+import badge from "./badge.png";
 
 const Landing = () => {
   const { t } = useTranslation();
