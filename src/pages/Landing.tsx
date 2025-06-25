@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 const Landing = () => {
   const { t } = useTranslation();
-  const { isRegistered, profile, loading } = useAuthContext();
+  const { isRegistered, profile, loading, registerEmail } = useAuthContext();
   const navigate = useNavigate();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
@@ -71,17 +71,52 @@ const Landing = () => {
     },
   ];
 
-  // Handle clicking "Commencer" or submitting email
+  useEffect(() => {
+    if (!loading && profile && isRegistered) {
+      console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
+      if (profile.onboardingcomplete) {
+        console.debug(`🧭 Redirection automatique vers /dashboard`);
+        navigate('/dashboard', { replace: true });
+      } else {
+        console.debug(`🧭 Redirection automatique vers /onboarding`);
+        navigate('/onboarding', { replace: true });
+      }
+    }
+  }, [isRegistered, profile, loading, navigate]);
+
   const handleAuthClick = () => {
     setShowAuthForm(true);
   };
 
-  const handleAuthSuccess = (email: string, exists: boolean) => {
-    setShowAuthForm(false);
-    console.debug(`🧭 Redirection vers /onboarding après enregistrement réussi, email=${email}, exists=${exists}`);
-    navigate('/onboarding', { replace: true });
+  const handleAuthSuccess = async (email: string) => {
+    console.debug(`🚀 handleAuthSuccess appelé avec email: ${email}`);
+ქ
+    try {
+      const { exists } = await registerEmail(email);
+      console.debug(`✅ registerEmail réussi, exists: ${exists}`);
+      setShowAuthForm(false);
+      toast.success(exists ? t('auth.welcomeBack') : t('auth.signupSuccess'), {
+        id: 'auth-toast',
+      });
+      console.debug(`🧭 Navigation vers /onboarding`);
+      navigate('/onboarding', { replace: true });
+    } catch (error) {
+      console.error('❌ Erreur dans handleAuthSuccess:', error);
+      toast.error(t('auth.error'), {
+        id: 'auth-error-toast',
+      });
+    }
   };
 
+  const handleDemoClick = () => {
+    toast(t('demo.loading'), {
+      style: { background: '#fefcbf', color: '#b45309' },
+    });
+    document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Reste du code inchangé...
+  // [Le reste du composant Landing reste identique]
   const handleDemoClick = () => {
     toast('🎥 Démo en cours de chargement...', {
       style: { background: '#fefcbf', color: '#b45309' },
@@ -260,7 +295,7 @@ const Landing = () => {
                 ? 'See how your quantum versions come to life with ultra-realistic AI avatars'
                 : 'Vois comment tes versions quantiques prennent vie avec des avatars IA ultra-réalistes'}
             </p>
-          </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -276,8 +311,7 @@ const Landing = () => {
       <section id="features" className="relative z-10 container mx-auto px-6 py-20">
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity =
-                0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-2 rounded-full text-sm font-semibold mb-3 border border-blue-500/30"
@@ -414,7 +448,7 @@ const Landing = () => {
             </p>
             <button
               onClick={handleAuthClick}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
             >
               {t('nav.start')}
               <ChevronRight className="w-5 h-5" />
@@ -434,7 +468,7 @@ const Landing = () => {
 
           <div className="text-center text-gray-400 space-y-2">
             <p className="text-sm">© 2025 Quantum Self AI. All rights reserved.</p>
-            <p className="text-sm">{t('footer.allRightsReserved')}</p>
+            <p className="text-sm">{t('footer.description')}</p>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
