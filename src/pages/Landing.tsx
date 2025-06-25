@@ -73,8 +73,8 @@ const Landing = () => {
 
   // Redirect only if registered and onboarding is complete
   useEffect(() => {
-    if (!loading && profile && isRegistered && profile.onboardingcomplete) {
-      console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
+    if (!loading && profile && isRegistered) {
+      console.debug(`🔐 Registration check: isRegistered=${isRegistered},  onboardingcomplete=${profile.onboardingcomplete}`);
       console.debug(`🧭 Redirection automatique vers /dashboard`);
       navigate('/dashboard', { replace: true });
     }
@@ -90,7 +90,7 @@ const Landing = () => {
       const { exists } = await registerEmail(email);
       setShowAuthForm(false);
       toast.success(exists ? 'Bienvenue de retour !' : 'Inscription réussie !');
-      console.debug(`🧭 Redirection vers /onboarding après enregistrement réussi`);
+      console.log(`🧭 Redirection vers /onboarding après enregistrement réussi`);
       navigate('/onboarding', { replace: true });
     } catch (error) {
       toast.error('Erreur lors de l’inscription. Veuillez réessayer.');
