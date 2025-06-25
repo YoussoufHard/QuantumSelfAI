@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Brain, Star, Crown, Trophy, ChevronRight, Sparkles, Zap, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -16,6 +16,7 @@ const Landing = () => {
   const { t } = useTranslation();
   const { isRegistered, visitor, loading, registerEmail } = useAuthContext();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
   const quantumVersions = [
@@ -73,8 +74,10 @@ const Landing = () => {
 
   useEffect(() => {
     if (loading || !visitor || !isRegistered) return;
-    navigate('/onboarding', { replace: true });
-  }, [isRegistered, visitor, loading, navigate]);
+    if (location.pathname !== '/onboarding') {
+      navigate('/onboarding', { replace: true });
+    }
+  }, [isRegistered, visitor, loading, navigate, location]);
 
   const handleAuthClick = () => {
     setShowAuthForm(true);
