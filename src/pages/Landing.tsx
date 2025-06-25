@@ -482,7 +482,6 @@ const Landing = () => {
             className="w-8 h-8 object-contain"
           />
         </a>
-      </motion.div>
           </div>
         </div>
       </footer>
