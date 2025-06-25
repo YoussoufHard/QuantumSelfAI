@@ -115,15 +115,6 @@ const Landing = () => {
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Reste du code inchangé...
-  // [Le reste du composant Landing reste identique]
-  const handleDemoClick = () => {
-    toast('🎥 Démo en cours de chargement...', {
-      style: { background: '#fefcbf', color: '#b45309' },
-    });
-    document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
