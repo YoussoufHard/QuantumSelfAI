@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 const Landing = () => {
   const { t } = useTranslation();
-  const { isRegistered, profile, loading, registerEmail } = useAuthContext();
+  const { isRegistered, profile, loading } = useAuthContext();
   const navigate = useNavigate();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
@@ -71,31 +71,15 @@ const Landing = () => {
     },
   ];
 
-  // Redirect only if registered and onboarding is complete
-  //useEffect(() => {
-  //   if (!loading && profile && isRegistered && profile.onboardingcomplete) {
-  //     console.debug(`🔐 Registration check: isRegistered=${isRegistered}, onboardingcomplete=${profile.onboardingcomplete}`);
-  //     console.debug(`🧭 Redirection automatique vers /dashboard`);
-  //     navigate('/dashboard', { replace: true });
-  //   }
-  // }, [isRegistered, profile, loading, navigate]);
-
   // Handle clicking "Commencer" or submitting email
   const handleAuthClick = () => {
     setShowAuthForm(true);
   };
 
-  const handleAuthSuccess = async (email: string) => {
-    try {
-      const { exists } = await registerEmail(email);
-      setShowAuthForm(false);
-      toast.success(exists ? 'Bienvenue de retour !' : 'Inscription réussie !');
-      console.log(`🧭 Redirection vers /onboarding après enregistrement réussi`);
-      navigate('/onboarding', { replace: true });
-    } catch (error) {
-      toast.error('Erreur lors de l’inscription. Veuillez réessayer.');
-      console.error('❌ Erreur handleAuthSuccess:', error);
-    }
+  const handleAuthSuccess = (email: string, exists: boolean) => {
+    setShowAuthForm(false);
+    console.debug(`🧭 Redirection vers /onboarding après enregistrement réussi, email=${email}, exists=${exists}`);
+    navigate('/onboarding', { replace: true });
   };
 
   const handleDemoClick = () => {
@@ -276,7 +260,7 @@ const Landing = () => {
                 ? 'See how your quantum versions come to life with ultra-realistic AI avatars'
                 : 'Vois comment tes versions quantiques prennent vie avec des avatars IA ultra-réalistes'}
             </p>
-          </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -292,7 +276,8 @@ const Landing = () => {
       <section id="features" className="relative z-10 container mx-auto px-6 py-20">
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity =
+                0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-2 rounded-full text-sm font-semibold mb-3 border border-blue-500/30"
@@ -429,7 +414,7 @@ const Landing = () => {
             </p>
             <button
               onClick={handleAuthClick}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
             >
               {t('nav.start')}
               <ChevronRight className="w-5 h-5" />
@@ -449,7 +434,7 @@ const Landing = () => {
 
           <div className="text-center text-gray-400 space-y-2">
             <p className="text-sm">© 2025 Quantum Self AI. All rights reserved.</p>
-            <p className="text-sm">{t('footer.description')}</p>
+            <p className="text-sm">{t('footer.allRightsReserved')}</p>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
