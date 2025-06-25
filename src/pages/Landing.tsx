@@ -11,8 +11,7 @@ import TavusVideoDemo from '../components/TavusVideoDemo';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import PricingTiers from '../components/PricingTiers';
 import toast from 'react-hot-toast';
-import badge from "./badge.png"; // Si ton badge est dans le même dossier que ton fichier Landing.jsx
-
+import badge from "./badge.png"; //
 
 const Landing = () => {
   const { t } = useTranslation();
