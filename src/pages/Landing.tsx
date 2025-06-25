@@ -459,18 +459,30 @@ const Landing = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30"
             >
-              <Zap className="w-4 h-4 text-blue-400" />
-               <span className="text-gray-400">Built with</span>
-              <span className="font-semibold text-blue-300">Bolt</span>
-            </motion.div>
+{/* Section "Built with Bolt" + badge */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-black bg-opacity-70 px-3 py-2 rounded shadow-lg"
+      >
+        <Zap className="w-4 h-4 text-blue-400" />
+        <span className="text-gray-400 text-sm">Built with</span>
+        <span className="font-semibold text-blue-300 text-sm">Bolt</span>
 
-<a href="https://bolt.new" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2">
-  <span className="text-gray-400">Built with</span>
-  <span className="font-semibold text-blue-300">Bolt</span>
-  <img src="badge.png" alt="Built with Bolt.new" className="w-30" />
-</a>
-
-
+        <a
+          href="https://bolt.new"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-2"
+        >
+          <img
+            src={badge}
+            alt="Built with Bolt.new"
+            className="w-8 h-8 object-contain"
+          />
+        </a>
+      </motion.div>
           </div>
         </div>
       </footer>
