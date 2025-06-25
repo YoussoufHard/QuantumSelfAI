@@ -156,12 +156,12 @@ const Chat = () => {
       const isConnected = await GeminiService.testConnection();
       setGeminiConnected(isConnected);
       console.debug('✅ Gemini test result:', isConnected);
-      toast.success('✅ Gemini connection test successful');
+      // toast.success('✅ Gemini connection test successful'); // Dev only
     } catch (error) {
       console.error('❌ Gemini test failed:', error);
       Sentry.captureException(error);
       setGeminiConnected(false);
-      // toast.error('🔴 Gemini connection test failed');
+      // toast.error('🔴 Gemini connection test failed'); // Dev only
     }
   };
 
@@ -193,9 +193,8 @@ const Chat = () => {
         } catch (geminiError) {
           console.warn('⚠️ Gemini error, falling back to simulated response:', geminiError);
           Sentry.captureException(geminiError);
-          toast('⚠️ Gemini unavailable, using simulated response', {
-            style: { background: '#fefcbf', color: '#b45309' },
-          });
+          // toast('⚠️ Gemini unavailable, using simulated response', { style: { background: '#fefcbf', color: '#b45309' }, }); // Dev only
+          console.warn('⚠️ Gemini unavailable, using simulated response');
           responseText = ElevenLabsService.getSimulatedResponse(inputMessage, {
             name: selectedVersion.name,
             systemPrompt: selectedVersion.systemPrompt,
@@ -206,9 +205,8 @@ const Chat = () => {
         }
       } else {
         console.debug('🎭 Using simulated response (Gemini offline)...');
-        toast('⚠️ Gemini offline, using simulated response', {
-          style: { background: '#fefcbf', color: '#b45309' },
-        });
+        // toast('⚠️ Gemini offline, using simulated response', { style: { background: '#fefcbf', color: '#b45309' }, }); // Dev only
+        console.warn('⚠️ Gemini offline, using simulated response');
         responseText = ElevenLabsService.getSimulatedResponse(inputMessage, {
           name: selectedVersion.name,
           systemPrompt: selectedVersion.systemPrompt,
@@ -229,15 +227,15 @@ const Chat = () => {
           responseAudio = await ElevenLabsService.generateSpeech(responseText, voiceId);
           if (responseAudio.size > 0) {
             console.debug('✅ ElevenLabs audio generated successfully');
-            toast.success(`🔊 Audio generated with ${voiceId === user?.voiceCloneId ? 'your cloned voice' : 'Will\'s voice'}`);
+            // toast.success(`🔊 Audio generated with ${voiceId === user?.voiceCloneId ? 'your cloned voice' : 'Will\'s voice'}`); // Dev only
           } else {
             console.warn('⚠️ Empty audio generated');
-            // toast.error('🔴 Audio generation failed, using text response');
+            // toast.error('🔴 Audio generation failed, using text response'); // Dev only
           }
         } catch (audioError) {
           console.warn('⚠️ Audio generation error:', audioError);
           Sentry.captureException(audioError);
-          // toast.error('🔴 Audio generation failed, using text response');
+          // toast.error('🔴 Audio generation failed, using text response'); // Dev only
         }
       }
 
