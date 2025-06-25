@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import * as Sentry from '@sentry/react';
 
@@ -9,7 +9,6 @@ export interface AuthUser {
 }
 
 export interface AuthState {
-  email: string | null;
   profile: AuthUser | null;
   loading: boolean;
   isRegistered: boolean;
@@ -17,36 +16,12 @@ export interface AuthState {
 
 export function useAuth() {
   const [authState, setAuthState] = useState<AuthState>({
-    email: null,
     profile: null,
     loading: true,
     isRegistered: false,
   });
 
-  useEffect(() => {
-    const storedEmail = localStorage.getItem('quantum_self_email');
-    if (storedEmail) {
-      fetchVisitorProfile(storedEmail).then(profile => {
-        if (profile) {
-          setAuthState({
-            email: storedEmail,
-            profile,
-            loading: false,
-            isRegistered: true,
-          });
-          console.debug(`🔐 Initial state: REGISTERED ${storedEmail}`);
-        } else {
-          setAuthState(prev => ({ ...prev, loading: false }));
-          console.debug('🔐 Initial state: NOT_REGISTERED');
-        }
-      });
-    } else {
-      setAuthState(prev => ({ ...prev, loading: false }));
-      console.debug('🔐 Initial state: NOT_REGISTERED');
-    }
-  }, []);
-
-  const fetchVisitorProfile = async (email: string): Promise<AuthUser | null> => {
+  const fetchVisitorProfile = useCallback(async (email: string): Promise<AuthUser | null> => {
     try {
       const { data, error } = await supabase
         .from('visitors')
@@ -71,9 +46,27 @@ export function useAuth() {
       Sentry.captureException(error);
       return null;
     }
-  };
+  }, []);
 
-  const registerEmail = async (email: string) => {
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('quantum_self_email');
+    if (storedEmail) {
+      fetchVisitorProfile(storedEmail).then(profile => {
+        setAuthState({
+          profile,
+          loading: false,
+          isRegistered: !!profile,
+        });
+        console.debug(`🔐 Initial state: ${profile ? `REGISTERED ${storedEmail}` : 'NOT_REGISTERED'}`);
+      });
+    } else {
+      setAuthState({ profile: null, loading: false, isRegistered: false });
+      console.debug('🔐 Initial state: NOT_REGISTERED');
+    }
+  }, [fetchVisitorProfile]);
+
+  const registerEmail = useCallback(async (email: string) => {
+    setAuthState(prev => ({ ...prev, loading: true }));
     try {
       const { data: existingVisitor, error: selectError } = await supabase
         .from('visitors')
@@ -86,13 +79,13 @@ export function useAuth() {
       }
 
       if (existingVisitor) {
+        const profile: AuthUser = {
+          id: existingVisitor.id,
+          email: existingVisitor.email,
+          onboardingcomplete: existingVisitor.onboardingcomplete || false,
+        };
         setAuthState({
-          email,
-          profile: {
-            id: existingVisitor.id,
-            email: existingVisitor.email,
-            onboardingcomplete: existingVisitor.onboardingcomplete || false,
-          },
+          profile,
           loading: false,
           isRegistered: true,
         });
@@ -114,13 +107,13 @@ export function useAuth() {
         throw new Error(`Erreur enregistrement email: ${insertError.message}`);
       }
 
+      const profile: AuthUser = {
+        id: newVisitor.id,
+        email: newVisitor.email,
+        onboardingcomplete: newVisitor.onboardingcomplete || false,
+      };
       setAuthState({
-        email,
-        profile: {
-          id: newVisitor.id,
-          email: newVisitor.email,
-          onboardingcomplete: newVisitor.onboardingcomplete || false,
-        },
+        profile,
         loading: false,
         isRegistered: true,
       });
@@ -130,30 +123,30 @@ export function useAuth() {
     } catch (error: any) {
       console.error('❌ Erreur registerEmail:', error.message);
       Sentry.captureException(error);
+      setAuthState(prev => ({ ...prev, loading: false }));
       throw error;
     }
-  };
+  }, []);
 
-  const clearRegistration = async () => {
+  const clearRegistration = useCallback(async () => {
     try {
       setAuthState({
-        email: null,
         profile: null,
         loading: false,
         isRegistered: false,
       });
       localStorage.removeItem('quantum_self_email');
       console.debug('🔐 Déconnexion réussie');
-      return { error: null };
     } catch (error: any) {
       console.error('❌ Erreur clearRegistration:', error.message);
       Sentry.captureException(error);
-      return { error };
+      throw error;
     }
-  };
+  }, []);
 
-  const completeOnboarding = async () => {
+  const completeOnboarding = useCallback(async () => {
     if (!authState.profile) return;
+    setAuthState(prev => ({ ...prev, loading: true }));
     try {
       const { error } = await supabase
         .from('visitors')
@@ -163,14 +156,16 @@ export function useAuth() {
       setAuthState(prev => ({
         ...prev,
         profile: { ...prev.profile!, onboardingcomplete: true },
+        loading: false,
       }));
       console.debug('🔐 Onboarding complété');
     } catch (error: any) {
       console.error('❌ Erreur completeOnboarding:', error.message);
       Sentry.captureException(error);
+      setAuthState(prev => ({ ...prev, loading: false }));
       throw error;
     }
-  };
+  }, [authState.profile]);
 
   return {
     ...authState,
