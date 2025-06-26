@@ -29,6 +29,12 @@ QuantumSelfAI is an innovative AI-powered application that allows users to engag
 
 QuantumSelfAI follows a modular architecture with clear separation of concerns:
 
+## 🏗️ Architecture du Projet
+
+Voici l'architecture globale du projet :
+
+![Architecture du Projet](images/architecture.png)
+
 ```
 📦 QuantumSelfAI
 ├── 🎨 Frontend (React + TypeScript)
