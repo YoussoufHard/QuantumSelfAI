@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';   // Désactivé : plus besoin de redirection
 import { useAuthContext } from '../context/AuthContext';
 import { Loader } from 'lucide-react';
 
@@ -8,8 +8,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthContext();
+  const { loading } = useAuthContext();
 
+  // ✔ On peut garder le loader pour éviter les flashs si tu veux
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -21,10 +22,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
-
+  // ✔ Authentification désactivée → on laisse entrer tout le monde
   return <>{children}</>;
 };
 

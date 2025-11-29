@@ -5,7 +5,7 @@ import { Brain, Star, Crown, Trophy, ChevronRight, Sparkles, Zap, Play } from 'l
 import { motion } from 'framer-motion';
 import { useAuthContext } from '../context/AuthContext';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import AuthForm from '../components/AuthForm';
+// import AuthForm from '../components/AuthForm';   // Désactivé pour enlever l'auth obligatoire
 import QuantumParticles from '../components/QuantumParticles';
 import TavusVideoDemo from '../components/TavusVideoDemo';
 import TestimonialCarousel from '../components/TestimonialCarousel';
@@ -15,8 +15,8 @@ import badge from "./badge.png";
 
 const Landing = () => {
   const { t } = useTranslation();
-  const { isRegistered, visitor, loading, registerEmail } = useAuthContext();
   const navigate = useNavigate();
+  const { isRegistered, visitor, loading, registerEmail } = useAuthContext();
   const location = useLocation();
   const [showAuthForm, setShowAuthForm] = useState(false);
 
@@ -72,41 +72,23 @@ const Landing = () => {
       traits: ['serene', 'harmonious', 'fulfilled'],
     },
   ];
-  
 
+  // 🔥 Désactivation de la redirection automatique basée sur l’authentification
+  /*
   useEffect(() => {
     if (loading || !visitor || !isRegistered) return;
     if (location.pathname !== '/onboarding') {
       navigate('/onboarding', { replace: true });
     }
   }, [isRegistered, visitor, loading, navigate, location]);
+  */
 
+  // Désactivé : Auth obligatoire
   const handleAuthClick = () => {
-    setShowAuthForm(true);
-  };
-
-  const handleAuthSuccess = async (email: string) => {
-    console.debug(`🚀 handleAuthSuccess appelé avec email: ${email}`);
-    try {
-      const { exists } = await registerEmail(email);
-      console.debug(`✅ registerEmail réussi, exists: ${exists}`);
-      setShowAuthForm(false);
-      toast.success(exists ? t('auth.welcomeBack') : t('auth.signupSuccess'), {
-        id: 'auth-toast',
-      });
-      // La navigation est gérée par le useEffect, donc on ne fait rien ici
-    } catch (error) {
-      console.error('❌ Erreur dans handleAuthSuccess:', error);
-      toast.error(t('auth.error'), {
-        id: 'auth-error-toast',
-      });
-    }
+    navigate('/onboarding');
   };
 
   const handleDemoClick = () => {
-    toast(t('demo.loading'), {
-      style: { background: '#fefcbf', color: '#b45309' },
-    });
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -140,17 +122,17 @@ const Landing = () => {
               <Brain className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white">Quantum Self AI</h1>
-            <a
-  href="https://bolt.new"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-black bg-opacity-70 px-3 py-2 rounded shadow-lg"
->
-  <img src={badge} alt="Built with Bolt.new" className="w-8 h-8" />
-  <span className="text-gray-400 text-sm">Built with</span>
-  <span className="font-semibold text-blue-300 text-sm">Bolt</span>
-</a>
 
+            {/* <a
+              href="https://bolt.new"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-black bg-opacity-70 px-3 py-2 rounded shadow-lg"
+            >
+              <img src={badge} alt="Built with Bolt.new" className="w-8 h-8" />
+              <span className="text-gray-400 text-sm">Built with</span>
+              <span className="font-semibold text-blue-300 text-sm">Bolt</span>
+            </a> */}
           </motion.div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -163,6 +145,7 @@ const Landing = () => {
             >
               {t('nav.features')}
             </motion.a>
+
             <motion.a
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -172,6 +155,7 @@ const Landing = () => {
             >
               {t('nav.demo')}
             </motion.a>
+
             <motion.a
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -181,12 +165,14 @@ const Landing = () => {
             >
               {t('nav.pricing')}
             </motion.a>
+
             <LanguageSwitcher />
+
             <motion.button
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              onClick={handleAuthClick}
+              onClick={() => navigate('/onboarding')}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
             >
               {t('nav.start')}
@@ -197,7 +183,7 @@ const Landing = () => {
           <div className="md:hidden flex items-center gap-3">
             <LanguageSwitcher />
             <button
-              onClick={handleAuthClick}
+              onClick={() => navigate('/onboarding')}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium text-sm"
             >
               {t('nav.start')}
@@ -207,6 +193,7 @@ const Landing = () => {
         </nav>
       </header>
 
+      {/* HERO */}
       <section className="relative z-10 container mx-auto px-6 py-20 text-center">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -254,7 +241,7 @@ const Landing = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <button
-              onClick={handleAuthClick}
+              onClick={() => navigate('/onboarding')}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               {t('nav.start')}
@@ -271,6 +258,8 @@ const Landing = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* SECTIONS — Features, Demo, etc. (inchangées) */}
 
       <section id="demo" className="relative z-10 container mx-auto px-6 py-20">
         <div className="max-w-4xl mx-auto">
@@ -444,7 +433,7 @@ const Landing = () => {
                 : 'Il ne faut que quelques minutes pour configurer votre profil quantique et commencer votre voyage transformateur.'}
             </p>
             <button
-              onClick={handleAuthClick}
+              onClick={() => navigate('/onboarding')}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-3 rounded-xl font-semibold text-lg hover:bg-blue-600 transition-all duration-300 hover:scale-105"
             >
               {t('nav.start')}
@@ -466,39 +455,40 @@ const Landing = () => {
           <div className="text-center text-gray-400 space-y-2">
             <p className="text-sm">© 2025 Quantum Self AI. All rights reserved.</p>
             <p className="text-sm">{t('footer.description')}</p>
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30">
-              
-         <Zap className="w-4 h-4 text-blue-400" />
-        <span className="text-gray-400 text-sm">Built with</span>
-        <span className="font-semibold text-blue-300 text-sm">Bolt</span>
+              className="inline-flex items-center gap-2 bg-gray-800/50 rounded-full px-4 py-2 text-sm border border-gray-700/30"
+            >
+              <Zap className="w-4 h-4 text-blue-400" />
+              <span className="text-gray-400 text-sm">Built with</span>
+              <span className="font-semibold text-blue-300 text-sm">Bolt</span>
 
-        <a
-          href="https://bolt.new"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ml-2"
-        >
-          <img
-            src={badge}
-            alt="Built with Bolt.new"
-            className="w-8 h-8 object-contain"
-          />
-        </a>
-      </motion.div>
-
+              <a
+                href="https://bolt.new"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={badge}
+                  alt="Built with Bolt.new"
+                  className="w-8 h-8 object-contain"
+                />
+              </a>
+            </motion.div> */}
           </div>
         </div>
       </footer>
 
+      {/* AuthForm désactivé */}
+      {/*
       <AuthForm
         isOpen={showAuthForm}
         onClose={() => setShowAuthForm(false)}
         onSuccess={handleAuthSuccess}
       />
+      */}
     </div>
   );
 };
